@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rosewell_life_science/Constants/app_assets.dart';
 import 'package:rosewell_life_science/Constants/app_colors.dart';
 import 'package:rosewell_life_science/Utils/app_sizer.dart';
 
-class CustomHeaderWidget extends StatelessWidget {
+class CustomHeaderWidget extends StatefulWidget {
   final String title;
   final String titleIcon;
   final double? titleIconSize;
@@ -18,15 +19,19 @@ class CustomHeaderWidget extends StatelessWidget {
   });
 
   @override
+  State<CustomHeaderWidget> createState() => _CustomHeaderWidgetState();
+}
+
+class _CustomHeaderWidgetState extends State<CustomHeaderWidget> {
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (onBackPressed != null) ...[
+        if (widget.onBackPressed != null) ...[
           IconButton(
-            onPressed: onBackPressed,
+            onPressed: widget.onBackPressed,
             style: IconButton.styleFrom(
-              surfaceTintColor: AppColors.LIGHT_SECONDARY_COLOR,
-              highlightColor: AppColors.LIGHT_SECONDARY_COLOR,
+              highlightColor: AppColors.PRIMARY_COLOR.withOpacity(0.2),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -36,23 +41,24 @@ class CustomHeaderWidget extends StatelessWidget {
             ),
             icon: Image.asset(
               AppAssets.backIcon,
-              width: 8.w,
+              color: AppColors.SECONDARY_COLOR,
+              width: context.isPortrait ? 8.w : 8.h,
             ),
           ),
           SizedBox(width: 2.w),
         ],
         Text(
-          title,
+          widget.title,
           style: TextStyle(
             color: AppColors.PRIMARY_COLOR,
-            fontSize: 16.sp,
+            fontSize: context.isPortrait ? 16.sp : 9.sp,
             fontWeight: FontWeight.w900,
           ),
         ),
         SizedBox(width: 2.w),
         Image.asset(
-          titleIcon,
-          width: titleIconSize ?? 8.w,
+          widget.titleIcon,
+          width: widget.titleIconSize ?? (context.isPortrait ? 8.w : 8.h),
         ),
       ],
     );

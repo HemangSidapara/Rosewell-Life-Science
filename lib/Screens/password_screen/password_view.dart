@@ -37,7 +37,7 @@ class _PasswordViewState extends State<PasswordView> {
                   },
                   icon: Image.asset(
                     AppAssets.backIcon,
-                    width: 10.w,
+                    width: context.isPortrait ? 10.w : 5.w,
                     color: AppColors.SECONDARY_COLOR,
                   ),
                 ),
@@ -49,7 +49,7 @@ class _PasswordViewState extends State<PasswordView> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.SECONDARY_COLOR,
-                        fontSize: 25.sp,
+                        fontSize: context.isPortrait ? 25.sp : 15.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -70,7 +70,7 @@ class _PasswordViewState extends State<PasswordView> {
                   children: [
                     Image.asset(
                       AppAssets.otpImage,
-                      height: 28.h,
+                      height: context.isPortrait ? 28.h : 35.h,
                     ),
                     SizedBox(height: 4.8.h),
 
@@ -80,7 +80,14 @@ class _PasswordViewState extends State<PasswordView> {
                         key: controller.passwordFormKey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Padding(
-                          padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom != 0 ? 2.h : 0),
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.viewInsetsOf(context).bottom != 0
+                                  ? context.isPortrait
+                                      ? 2.h
+                                      : 2.w
+                                  : context.isPortrait
+                                      ? 0
+                                      : 2.w),
                           child: TextFieldWidget(
                             controller: controller.passwordController,
                             title: AppStrings.password.tr,
@@ -96,13 +103,27 @@ class _PasswordViewState extends State<PasswordView> {
                               icon: Icon(
                                 !controller.isShowPassword.value ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                                 color: AppColors.PRIMARY_COLOR,
-                                size: 6.w,
+                                size: context.isPortrait ? 6.w : 3.w,
                               ),
                             ),
                           ),
                         ),
                       );
                     }),
+
+                    ///Submit
+                    if (context.isLandscape)
+                      Obx(() {
+                        return ButtonWidget(
+                          onPressed: controller.isSignInLoading.value
+                              ? () {}
+                              : () async {
+                                  await controller.checkPassword();
+                                },
+                          isLoading: controller.isSignInLoading.value,
+                          buttonTitle: AppStrings.login.tr,
+                        );
+                      }),
                   ],
                 ),
               ),
@@ -110,17 +131,18 @@ class _PasswordViewState extends State<PasswordView> {
           ),
 
           ///Submit
-          Obx(() {
-            return ButtonWidget(
-              onPressed: controller.isSignInLoading.value
-                  ? () {}
-                  : () async {
-                      await controller.checkPassword();
-                    },
-              isLoading: controller.isSignInLoading.value,
-              buttonTitle: AppStrings.login.tr,
-            );
-          }),
+          if (context.isPortrait)
+            Obx(() {
+              return ButtonWidget(
+                onPressed: controller.isSignInLoading.value
+                    ? () {}
+                    : () async {
+                        await controller.checkPassword();
+                      },
+                isLoading: controller.isSignInLoading.value,
+                buttonTitle: AppStrings.login.tr,
+              );
+            }),
           SizedBox(height: 3.h),
         ],
       ),

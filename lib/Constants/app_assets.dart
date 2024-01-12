@@ -7,19 +7,16 @@ class AppAssets {
   static const String loginImage = "assets/images/login_image.png";
   static const String otpImage = "assets/images/otp_image.png";
   static const String splashImage = "assets/images/splash_image.png";
-  static const String createOrderImage = "assets/images/create_order_image.png";
 
   ///Icons
   static const String backIcon = "assets/icons/back_icon.png";
   static const String frontIcon = "assets/icons/front_icon.png";
   static const String homeIcon = "assets/icons/home_icon.png";
   static const String settingsIcon = "assets/icons/settings_icon.png";
-  static const String pendingOrderIcon = "assets/icons/pending_order_icon.png";
-  static const String addStockIcon = "assets/icons/add_stock_icon.png";
-  static const String challanIcon = "assets/icons/challan_icon.png";
-  static const String totalStockIcon = "assets/icons/total_stock_icon.png";
-  static const String ordersHistoryIcon = "assets/icons/orders_history.png";
-  static const String ordersDoneIcon = "assets/icons/orders_done.png";
-  static const String addNewProductIcon = "assets/icons/add_new_product.png";
-  static const String addNewProduct2Icon = "assets/icons/add_new_product_2.0.png";
+  static const String doctorListIcon = "assets/icons/doctor_list_icon.png";
+  static const String doctorListPresentationIcon = "assets/icons/doctor_list_presentation.png";
+  static const String medicineDetailsBottomIcon = "assets/icons/medicine_details_bottom.png";
+  static const String medicineDetailsIcon = "assets/icons/medicine_details.png";
+  static const String addMedicineDetailsIcon = "assets/icons/add_medicine.png";
+  static const String editMedicineDetailsIcon = "assets/icons/edit_medicine.png";
 }

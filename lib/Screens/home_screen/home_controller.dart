@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rosewell_life_science/Routes/nasted_navigator/dashboard_navigator.dart';
+import 'package:rosewell_life_science/Routes/nasted_navigator/medicine_details_navigator.dart';
+import 'package:rosewell_life_science/Routes/nasted_navigator/settings_navigator.dart';
 
 class HomeController extends GetxController {
   RxInt bottomIndex = 0.obs;
@@ -8,9 +10,8 @@ class HomeController extends GetxController {
 
   List<Widget> bottomItemWidgetList = [
     const DashboardNavigator(),
-    Container(),
-    Container(),
-    Container(),
+    const MedicineDetailsNavigator(),
+    const SettingsNavigator(),
   ];
 
   Future<void> onBottomItemChange({required int index}) async {
@@ -20,8 +21,12 @@ class HomeController extends GetxController {
         Get.back(id: 0);
       }
     } else if (index == 1) {
+      if (Get.keys[1]?.currentState?.canPop() == true) {
+        Get.back(id: 1);
+      }
     } else if (index == 2) {
-    } else if (index == 3) {}
+      bottomIndex.value == 0;
+    }
     pageController.animateToPage(
       bottomIndex.value,
       duration: const Duration(milliseconds: 200),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 extension SizerExt on num {
   /// Calculates the height depending on the device's screen size
@@ -18,10 +19,18 @@ extension SizerExt on num {
 class AppSizer {
   Size _size = const Size(100, 100);
 
+  Orientation _orientation = Orientation.portrait;
+
   Size get getSize => _size;
+
+  Orientation get getOrientation => _orientation;
 
   setSize(Size value) {
     _size = value;
+  }
+
+  setOrientation(Orientation orientation) {
+    _orientation = orientation;
   }
 }
 
@@ -31,6 +40,14 @@ Future<void> setSize(Size size) async {
   appSizer.setSize(size);
 }
 
+Future<void> setOrientation(Orientation orientation) async {
+  appSizer.setOrientation(orientation);
+}
+
 Size getSize() {
   return appSizer.getSize;
+}
+
+Rx<Orientation> getOrientation() {
+  return appSizer.getOrientation.obs;
 }

@@ -35,14 +35,15 @@ class _SplashViewState extends State<SplashView> {
           children: [
             Image.asset(
               AppAssets.splashImage,
-              width: 80.w,
+              width: context.isPortrait ? 60.w : 30.w,
             ),
             SizedBox(height: 3.h),
             Text(
               AppStrings.appName,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.PRIMARY_COLOR,
-                fontSize: 22.sp,
+                fontSize: context.isPortrait ? 23.sp : 18.sp,
                 fontWeight: FontWeight.w900,
               ),
             ),

@@ -7,4 +7,9 @@ class Routes {
   static const passwordScreen = '/password';
   static const homeScreen = '/home';
   static const dashboardScreen = '/dashboard';
+  static const settingsScreen = '/settings';
+  static const presentationForDoctorsScreen = '/presentationForDoctors';
+  static const medicineDetailsScreen = '/medicineDetails';
+  static const addMedicineDetailsScreen = '/addMedicineDetails';
+  static const editMedicineDetailsScreen = '/editMedicineDetails';
 }
