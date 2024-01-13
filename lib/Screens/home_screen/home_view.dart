@@ -41,13 +41,11 @@ class _HomeViewState extends State<HomeView> {
           controller.onBottomItemChange(index: 0);
         } else if (Get.keys[1]?.currentState?.canPop() == true) {
           controller.onBottomItemChange(index: 1);
-        } else if (controller.bottomIndex.value == 2) {
-          controller.onBottomItemChange(index: 2);
         } else {
-          if (Get.keys[0]?.currentState?.canPop() != true) {
+          if (controller.bottomIndex.value != 0) {
+            controller.onBottomItemChange(index: 0);
+          } else if (Get.keys[0]?.currentState?.canPop() != true) {
             showExitDialog();
-          } else {
-            controller.onBottomItemChange(index: controller.bottomIndex.value);
           }
         }
       },
@@ -165,7 +163,7 @@ class _HomeViewState extends State<HomeView> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ///Cancel
+                    ///No
                     ButtonWidget(
                       onPressed: () {
                         Get.back();
@@ -174,7 +172,7 @@ class _HomeViewState extends State<HomeView> {
                       fixedSize: Size(context.isPortrait ? 30.w : 15.w, context.isPortrait ? 5.h : 12.h),
                     ),
 
-                    ///Delete
+                    ///Yes, exit
                     ButtonWidget(
                       onPressed: () async {
                         SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');

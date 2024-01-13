@@ -29,4 +29,10 @@ class AppStrings {
   static const String editMedicineDetails = 'Edit Medicine Details';
   static const String addMedicine = 'Add Medicine';
   static const String editMedicine = 'Edit Medicine';
+  static const String medicineName = 'Medicine Name';
+  static const String enterMedicineName = 'Enter medicine name';
+  static const String pleaseEnterMedicineName = 'Please enter medicine name.';
+  static const String imagesOfMedicine = 'Images of Medicine';
+  static const String chooseImagesFromYourDevice = 'Choose images from your device.';
+  static const String addMoreImages = 'Add more images';
 }

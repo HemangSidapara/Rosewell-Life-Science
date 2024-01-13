@@ -30,4 +30,9 @@ Map<String, String> guIN = <String, String>{
   AppStrings.editMedicineDetails: "દવાની વિગતો સંપાદિત કરો",
   AppStrings.addMedicine: "દવા ઉમેરો",
   AppStrings.editMedicine: "દવા સંપાદિત કરો",
+  AppStrings.medicineName: "દવાનું નામ",
+  AppStrings.enterMedicineName: "દવાનું નામ દાખલ કરો",
+  AppStrings.imagesOfMedicine: "દવાની છબીઓ",
+  AppStrings.chooseImagesFromYourDevice: "તમારા ઉપકરણમાંથી છબીઓ પસંદ કરો.",
+  AppStrings.addMoreImages: "વધુ છબીઓ ઉમેરો",
 };

@@ -24,8 +24,6 @@ class HomeController extends GetxController {
       if (Get.keys[1]?.currentState?.canPop() == true) {
         Get.back(id: 1);
       }
-    } else if (index == 2) {
-      bottomIndex.value == 0;
     }
     pageController.animateToPage(
       bottomIndex.value,

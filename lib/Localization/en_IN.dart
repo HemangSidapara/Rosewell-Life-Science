@@ -30,4 +30,10 @@ Map<String, String> enIN = <String, String>{
   AppStrings.editMedicineDetails: "Edit Medicine Details",
   AppStrings.addMedicine: "Add Medicine",
   AppStrings.editMedicine: "Edit Medicine",
+  AppStrings.medicineName: "Medicine Name",
+  AppStrings.enterMedicineName: "Enter medicine name",
+  AppStrings.pleaseEnterMedicineName: "Please enter medicine name.",
+  AppStrings.imagesOfMedicine: "Images of Medicine",
+  AppStrings.chooseImagesFromYourDevice: "Choose images from your device.",
+  AppStrings.addMoreImages: "Add more images",
 };

@@ -30,4 +30,10 @@ Map<String, String> hiIN = <String, String>{
   AppStrings.editMedicineDetails: "औषधि विवरण संपादित करें",
   AppStrings.addMedicine: "दवा जोड़ें",
   AppStrings.editMedicine: "चिकित्सा संपादित करें",
+  AppStrings.medicineName: "दवा का नाम",
+  AppStrings.enterMedicineName: "दवा का नाम दर्ज करें",
+  AppStrings.pleaseEnterMedicineName: "कृपया दवा का नाम दर्ज करें।",
+  AppStrings.imagesOfMedicine: "चिकित्सा की छवियाँ",
+  AppStrings.chooseImagesFromYourDevice: "अपने डिवाइस से छवियाँ चुनें.",
+  AppStrings.addMoreImages: "और छवियाँ जोड़ें",
 };
