@@ -22,6 +22,8 @@ class TextFieldWidget extends StatefulWidget {
   final BoxConstraints? prefixIconConstraints;
   final Widget? prefixIcon;
   final void Function(String value)? onFieldSubmitted;
+  final double? textFieldWidth;
+  final bool readOnly;
 
   const TextFieldWidget({
     super.key,
@@ -43,6 +45,8 @@ class TextFieldWidget extends StatefulWidget {
     this.prefixIconConstraints,
     this.prefixIcon,
     this.onFieldSubmitted,
+    this.textFieldWidth,
+    this.readOnly = false,
   });
 
   @override
@@ -53,7 +57,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: context.isPortrait ? null : 50.w,
+      width: context.isPortrait ? null : widget.textFieldWidth ?? 50.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -90,11 +94,11 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             onChanged: widget.onChanged,
             onSaved: widget.onSaved,
             onFieldSubmitted: widget.onFieldSubmitted,
+            readOnly: widget.readOnly,
             decoration: InputDecoration(
               counter: const SizedBox(),
               counterStyle: TextStyle(color: AppColors.PRIMARY_COLOR),
               filled: true,
-              enabled: true,
               prefixIconConstraints: widget.prefixIconConstraints,
               prefixIcon: widget.prefixIcon,
               fillColor: AppColors.WHITE_COLOR,

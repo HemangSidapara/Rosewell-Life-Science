@@ -22,6 +22,7 @@ class CustomScaffoldWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: bottomSheet != null,
         bottomSheet: Material(
           color: AppColors.WHITE_COLOR,
           borderRadius: BorderRadius.zero,

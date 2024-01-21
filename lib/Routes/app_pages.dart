@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:rosewell_life_science/Screens/home_screen/dashboard_screen/presentation_for_doctors_screen/product_image_presentation_screen/product_image_presentation_view.dart';
 import 'package:rosewell_life_science/Screens/home_screen/home_binding.dart';
 import 'package:rosewell_life_science/Screens/home_screen/home_view.dart';
 import 'package:rosewell_life_science/Screens/password_screen/passoword_binding.dart';
@@ -39,6 +40,12 @@ class AppPages {
       name: Routes.homeScreen,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: transitionDuration,
+    ),
+    GetPage(
+      name: Routes.productImagePresentationScreen,
+      page: () => const ProductImagePresentationView(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: transitionDuration,
     ),

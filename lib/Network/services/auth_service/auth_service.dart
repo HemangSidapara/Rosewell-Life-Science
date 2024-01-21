@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:rosewell_life_science/Constants/api_keys.dart';
 import 'package:rosewell_life_science/Constants/api_urls.dart';
 import 'package:rosewell_life_science/Constants/app_constance.dart';
+import 'package:rosewell_life_science/Constants/app_strings.dart';
 import 'package:rosewell_life_science/Constants/app_utils.dart';
 import 'package:rosewell_life_science/Constants/get_storage.dart';
 import 'package:rosewell_life_science/Network/api_base_helper.dart';
@@ -17,29 +18,33 @@ class AuthService {
     required String phone,
     required String password,
   }) async {
-    var param = {
+    final param = {
       ApiKeys.phone: phone,
       ApiKeys.password: password,
     };
-    var response = await ApiBaseHelper().postHTTP(
+    final response = await ApiBaseHelper().postHTTP(
       ApiUrls.loginApi,
       showProgress: false,
       onError: (error) {
-        Utils.handleMessage(message: error.message);
+        Utils.handleMessage(message: error.message, isError: true);
       },
       onSuccess: (data) {
-        final loginModel = loginModelFromJson(jsonEncode(data.response!.data));
-        if (data.isSuccess && loginModel.code!.toInt() >= 200 && loginModel.code!.toInt() <= 299) {
-          setData(AppConstance.authorizationToken, loginModel.token);
-          if (kDebugMode) {
-            print("login success message :::: ${loginModel.msg}");
+        try {
+          final loginModel = loginModelFromJson(jsonEncode(data.response!.data));
+          if (data.isSuccess && loginModel.code!.toInt() >= 200 && loginModel.code!.toInt() <= 299) {
+            setData(AppConstance.authorizationToken, loginModel.token);
+            if (kDebugMode) {
+              print("login success message :::: ${loginModel.msg}");
+            }
+            Utils.handleMessage(message: loginModel.msg?.tr);
+          } else {
+            if (kDebugMode) {
+              print("login error message :::: ${loginModel.msg}");
+            }
+            Utils.handleMessage(message: loginModel.msg?.tr, isError: true);
           }
-          Utils.handleMessage(message: loginModel.msg?.tr);
-        } else {
-          if (kDebugMode) {
-            print("login error message :::: ${loginModel.msg}");
-          }
-          Utils.handleMessage(message: loginModel.msg?.tr, isError: true);
+        } catch (e) {
+          Utils.handleMessage(message: AppStrings.temporaryServiceIsNotAvailable.tr, isError: true);
         }
       },
       params: param,

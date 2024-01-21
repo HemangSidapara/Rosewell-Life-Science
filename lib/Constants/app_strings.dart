@@ -35,4 +35,20 @@ class AppStrings {
   static const String imagesOfMedicine = 'Images of Medicine';
   static const String chooseImagesFromYourDevice = 'Choose images from your device.';
   static const String addMoreImages = 'Add more images';
+  static const String add = 'Add';
+  static const String pleaseChooseImages = 'Please choose images.';
+  static const String edit = 'Edit';
+  static const String listOfMedicine = 'List of Medicine';
+  static const String reset = 'Reset';
+  static const String pleaseSelectMedicine = 'Please select medicine.';
+  static const String selectMedicine = 'Select Medicine';
+  static const String searchMedicine = 'Search Medicine';
+  static const String addDoctor = 'Add Doctor';
+  static const String editDoctor = 'Edit Doctor';
+  static const String select = 'Select';
+  static const String doctorName = 'Doctor Name';
+  static const String enterDoctorName = 'Enter doctor name';
+  static const String pleaseEnterDoctorName = 'Please enter doctor name.';
+  static const String noMedicineHasBeenSelected = 'No medicine has been selected.';
+  static const String view = 'View';
 }

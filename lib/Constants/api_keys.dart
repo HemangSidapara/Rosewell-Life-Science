@@ -3,14 +3,10 @@
 class ApiKeys {
   static const phone = "phone";
   static const password = "password";
-  static const name = "name";
-  static const category = "category";
-  static const meta = "meta";
-  static const size = "size";
-  static const weightOfPiece = "weightOfPiece";
-  static const weight = "weight";
-  static const piece = "piece";
-  static const modelID = "model_id";
-  static const orderID = "order_id";
-  static const partyName = "party_name";
+  static const image = "image[]";
+  static const medicineName = "medicine_name";
+  static const pID = "p_id";
+  static const oldMetaID = "old_metaid";
+  static const doctorName = "doctor_name";
+  static const product = "product";
 }

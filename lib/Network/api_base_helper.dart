@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:rosewell_life_science/Constants/api_urls.dart';
 import 'package:rosewell_life_science/Constants/app_constance.dart';
 import 'package:rosewell_life_science/Constants/get_storage.dart';
@@ -15,8 +16,8 @@ class ApiBaseHelper {
   static BaseOptions opts = BaseOptions(
     baseUrl: baseUrl,
     responseType: ResponseType.json,
-    connectTimeout: const Duration(milliseconds: 4500),
-    receiveTimeout: const Duration(milliseconds: 4500),
+    connectTimeout: const Duration(milliseconds: 45000),
+    receiveTimeout: const Duration(milliseconds: 45000),
     sendTimeout: const Duration(milliseconds: 4500),
   );
 
@@ -40,7 +41,10 @@ class ApiBaseHelper {
     return dio
       ..interceptors.add(
         InterceptorsWrapper(
-          onRequest: (RequestOptions options, handler) {
+          onRequest: (RequestOptions options, handler) async {
+            if (Get.isSnackbarOpen) {
+              await Get.closeCurrentSnackbar();
+            }
             if (showProgressDialog) ProgressDialog.showProgressDialog(true);
             Logger.printLog(tag: '|---------------> ${options.method} JSON METHOD <---------------|\n\n REQUEST_URL :', printLog: '\n ${options.uri} \n\n REQUEST_HEADER : ${options.headers}  \n\n REQUEST_DATA : ${options.data.toString()}', logIcon: Logger.info);
             requestInterceptor(options, handler);
@@ -88,6 +92,7 @@ class ApiBaseHelper {
     Function(ResponseModel res)? onSuccess,
     Function(DioExceptions dioExceptions)? onError,
     void Function(int, int)? onSendProgress,
+    Options? options,
   }) async {
     try {
       showProgressDialog = showProgress;
@@ -95,6 +100,7 @@ class ApiBaseHelper {
         url,
         data: params,
         onSendProgress: onSendProgress,
+        options: options,
       );
       return handleResponse(response, onError!, onSuccess!);
     } on DioException catch (e) {

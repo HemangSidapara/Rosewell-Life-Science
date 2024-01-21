@@ -12,4 +12,7 @@ class Routes {
   static const medicineDetailsScreen = '/medicineDetails';
   static const addMedicineDetailsScreen = '/addMedicineDetails';
   static const editMedicineDetailsScreen = '/editMedicineDetails';
+  static const addDoctorDetailsScreen = '/addDoctorDetails';
+  static const editDoctorDetailsScreen = '/editDoctorDetails';
+  static const productImagePresentationScreen = '/productImagePresentation';
 }

@@ -19,4 +19,6 @@ class AppAssets {
   static const String medicineDetailsIcon = "assets/icons/medicine_details.png";
   static const String addMedicineDetailsIcon = "assets/icons/add_medicine.png";
   static const String editMedicineDetailsIcon = "assets/icons/edit_medicine.png";
+  static const String addDoctorDetailsIcon = "assets/icons/add_doctor.png";
+  static const String editDoctorDetailsIcon = "assets/icons/edit_doctor.png";
 }

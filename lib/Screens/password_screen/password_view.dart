@@ -21,6 +21,7 @@ class _PasswordViewState extends State<PasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardPadding = MediaQuery.viewInsetsOf(context).bottom;
     return CustomScaffoldWidget(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -62,9 +63,9 @@ class _PasswordViewState extends State<PasswordView> {
 
           ///Password Image
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h).copyWith(bottom: 6.h),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h).copyWith(bottom: keyboardPadding !=0?keyboardPadding: 6.h),
+              child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

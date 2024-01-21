@@ -38,6 +38,7 @@ class _SignInViewState extends State<SignInView> {
 
   // ignore: non_constant_identifier_names
   Widget MainColumn() {
+    final keyboardPadding = MediaQuery.viewInsetsOf(context).bottom;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -54,54 +55,56 @@ class _SignInViewState extends State<SignInView> {
 
         ///Login Image
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  AppAssets.loginImage,
-                  height: context.isPortrait ? 35.h : 45.h,
-                ),
-                SizedBox(height: 2.h),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: keyboardPadding),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    AppAssets.loginImage,
+                    height: context.isPortrait ? 35.h : 45.h,
+                  ),
+                  SizedBox(height: 2.h),
 
-                ///Phone Field
-                Form(
-                  key: controller.signInFormKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.viewInsetsOf(context).bottom != 0
-                          ? context.isPortrait
-                              ? 2.h
-                              : 2.w
-                          : context.isPortrait
-                              ? 0
-                              : 2.w,
+                  ///Phone Field
+                  Form(
+                    key: controller.signInFormKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.viewInsetsOf(context).bottom != 0
+                            ? context.isPortrait
+                                ? 2.h
+                                : 2.w
+                            : context.isPortrait
+                                ? 0
+                                : 2.w,
+                      ),
+                      child: TextFieldWidget(
+                        controller: controller.phoneNumberController,
+                        title: AppStrings.phoneNumber.tr,
+                        hintText: AppStrings.enterPhoneNumber.tr,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        maxLength: 10,
+                        validator: (value) {
+                          return controller.validatePhoneNumber(value!);
+                        },
+                      ),
                     ),
-                    child: TextFieldWidget(
-                      controller: controller.phoneNumberController,
-                      title: AppStrings.phoneNumber.tr,
-                      hintText: AppStrings.enterPhoneNumber.tr,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      maxLength: 10,
-                      validator: (value) {
-                        return controller.validatePhoneNumber(value!);
+                  ),
+
+                  ///Submit
+                  if (context.isLandscape)
+                    ButtonWidget(
+                      onPressed: () async {
+                        await controller.checkLogin();
                       },
+                      buttonTitle: AppStrings.next.tr,
                     ),
-                  ),
-                ),
-
-                ///Submit
-
-                if (context.isLandscape)
-                  ButtonWidget(
-                    onPressed: () async {
-                      await controller.checkLogin();
-                    },
-                    buttonTitle: AppStrings.next.tr,
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
