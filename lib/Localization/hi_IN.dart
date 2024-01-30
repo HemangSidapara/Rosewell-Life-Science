@@ -51,4 +51,8 @@ Map<String, String> hiIN = <String, String>{
   AppStrings.pleaseEnterDoctorName: "कृपया डॉक्टर का नाम दर्ज करें।",
   AppStrings.noMedicineHasBeenSelected: "किसी भी दवा का चयन किया नहीं है।",
   AppStrings.view: "देखना",
+  AppStrings.listOfDoctors: "डॉक्टरों की सूची",
+  AppStrings.pleaseSelectDoctor: "कृपया डॉक्टर का चयन करें।",
+  AppStrings.selectDoctor: "डॉक्टर का चयन करें",
+  AppStrings.searchDoctor: "डॉक्टर खोजें",
 };

@@ -50,4 +50,8 @@ Map<String, String> guIN = <String, String>{
   AppStrings.pleaseEnterDoctorName: "કૃપા કરીને ડૉક્ટરનું નામ દાખલ કરો.",
   AppStrings.noMedicineHasBeenSelected: "કોઈ દવા પસંદ કરવામાં આવી નથી.",
   AppStrings.view: "જુઓ",
+  AppStrings.listOfDoctors: "ડોકટરોની યાદી",
+  AppStrings.pleaseSelectDoctor: "કૃપા કરીને ડૉક્ટર પસંદ કરો.",
+  AppStrings.selectDoctor: "ડૉક્ટર પસંદ કરો",
+  AppStrings.searchDoctor: "ડૉક્ટર શોધો",
 };

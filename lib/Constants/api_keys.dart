@@ -9,4 +9,5 @@ class ApiKeys {
   static const oldMetaID = "old_metaid";
   static const doctorName = "doctor_name";
   static const product = "product";
+  static const dID = "d_id";
 }

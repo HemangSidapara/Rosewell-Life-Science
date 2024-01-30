@@ -79,11 +79,15 @@ class DoctorDetailsService {
 
   ///Update Doctors Service
   Future<bool> updateDoctorService({
-    required List<String> imagesPath,
-    required String medicineName,
-    required String pID,
+    required String dID,
+    required String doctorName,
+    required List<int> product,
   }) async {
-    final params = {};
+    final params = {
+      ApiKeys.dID: dID,
+      ApiKeys.doctorName: doctorName,
+      ApiKeys.product: product,
+    };
     final response = await ApiBaseHelper().postHTTP(
       ApiUrls.updateDoctorApi,
       showProgress: false,
@@ -96,7 +100,7 @@ class DoctorDetailsService {
             if (kDebugMode) {
               print("updateDoctorApi success message :::: ${data.data['msg']}");
             }
-            Get.back(id: 1);
+            Get.back(id: 0);
             Utils.handleMessage(message: data.data['msg'].toString().tr);
           } else {
             if (kDebugMode) {
@@ -116,9 +120,11 @@ class DoctorDetailsService {
 
   ///Delete Doctor Service
   Future<ResponseModel> deleteDoctorService({
-    required String pID,
+    required String dID,
   }) async {
-    final params = {};
+    final params = {
+      ApiKeys.dID: dID,
+    };
     final response = await ApiBaseHelper().deleteHTTP(
       ApiUrls.deleteDoctorApi,
       showProgress: false,

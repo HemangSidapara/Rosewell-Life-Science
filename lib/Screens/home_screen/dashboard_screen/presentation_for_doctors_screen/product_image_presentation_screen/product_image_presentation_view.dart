@@ -22,6 +22,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
   RxBool isAppBarVisible = true.obs;
   RxBool isOneOpacity = true.obs;
   RxBool isInitPortrait = true.obs;
+  PageController pageController = PageController(initialPage: 0);
 
   @override
   void initState() {
@@ -29,12 +30,19 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       isInitPortrait(context.isPortrait);
     });
+    pageController.addListener(() {
+      setState(() {});
+    });
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
     imageList.clear();
-    imageList.addAll((Get.arguments as DoctorMeta).productMeta ?? []);
+    for (List<ProductMeta>? element in (Get.arguments as List<DoctorMeta>).map((e) => e.productMeta).toList()) {
+      element?.forEach((element) {
+        imageList.add(element);
+      });
+    }
     showAppBar();
   }
 
@@ -108,7 +116,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
                         ),
                       ),
                       title: Text(
-                        (Get.arguments as DoctorMeta).name ?? '',
+                        (Get.arguments as List<DoctorMeta>).where((element) => element.productMeta?.any((element) => element.pId == imageList[pageController.hasClients ? pageController.page!.toInt() : 0].pId) == true).toList().first.name ?? '',
                         style: TextStyle(
                           color: AppColors.SECONDARY_COLOR,
                           fontWeight: FontWeight.w600,
@@ -144,6 +152,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
                   children: [
                     Expanded(
                       child: PageView.builder(
+                        controller: pageController,
                         itemCount: imageList.length,
                         itemBuilder: (context, index) {
                           return CachedNetworkImage(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -112,21 +114,45 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                 return ExpansionTile(
                                   controller: presentationForDoctorsController.expansionTileControllerList[index],
                                   title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        '${index + 1}. ',
-                                        style: TextStyle(
-                                          color: AppColors.PRIMARY_COLOR,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: context.isPortrait ? 12.sp : 6.sp,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '${index + 1}. ',
+                                            style: TextStyle(
+                                              color: AppColors.PRIMARY_COLOR,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: context.isPortrait ? 12.sp : 6.sp,
+                                            ),
+                                          ),
+                                          Text(
+                                            presentationForDoctorsController.doctorDataList[index].name ?? '',
+                                            style: TextStyle(
+                                              color: AppColors.PRIMARY_COLOR,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: context.isPortrait ? 12.sp : 6.sp,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        presentationForDoctorsController.doctorDataList[index].name ?? '',
-                                        style: TextStyle(
-                                          color: AppColors.PRIMARY_COLOR,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: context.isPortrait ? 12.sp : 6.sp,
+
+                                      ///View
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.doctorDataList[index].doctorMeta?.map((e) => e).toList());
+                                        },
+                                        style: TextButton.styleFrom(
+                                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                        child: Text(
+                                          AppStrings.view.tr,
+                                          style: TextStyle(
+                                            color: AppColors.SECONDARY_COLOR,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: context.isPortrait ? 10.sp : 5.sp,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -135,10 +161,14 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                   onExpansionChanged: (value) {
                                     if (value) {
                                       for (int i = 0; i < presentationForDoctorsController.expansionTileControllerList.length; i++) {
-                                        if (i != index) {
-                                          presentationForDoctorsController.expansionTileControllerList[i].collapse();
-                                        } else {
-                                          presentationForDoctorsController.expandedIndex(index);
+                                        try {
+                                          if (i != index) {
+                                            presentationForDoctorsController.expansionTileControllerList[i].collapse();
+                                          } else {
+                                            presentationForDoctorsController.expandedIndex(index);
+                                          }
+                                        } catch (e) {
+                                          log(e.toString());
                                         }
                                       }
                                     }
@@ -195,45 +225,21 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                                     child: Padding(
                                                       padding: EdgeInsets.symmetric(horizontal: 5.w),
                                                       child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                '${i + 1}. ',
-                                                                style: TextStyle(
-                                                                  color: AppColors.PRIMARY_COLOR,
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 12.sp,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                presentationForDoctorsController.doctorDataList[index].doctorMeta?[i].name ?? '',
-                                                                style: TextStyle(
-                                                                  color: AppColors.PRIMARY_COLOR,
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 12.sp,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-
-                                                          ///View
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.doctorDataList[index].doctorMeta?[i]);
-                                                            },
-                                                            style: TextButton.styleFrom(
-                                                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                                              padding: EdgeInsets.zero,
+                                                          Text(
+                                                            '${i + 1}. ',
+                                                            style: TextStyle(
+                                                              color: AppColors.PRIMARY_COLOR,
+                                                              fontWeight: FontWeight.w600,
+                                                              fontSize: 12.sp,
                                                             ),
-                                                            child: Text(
-                                                              AppStrings.view.tr,
-                                                              style: TextStyle(
-                                                                color: AppColors.SECONDARY_COLOR,
-                                                                fontWeight: FontWeight.w600,
-                                                                fontSize: 10.sp,
-                                                              ),
+                                                          ),
+                                                          Text(
+                                                            presentationForDoctorsController.doctorDataList[index].doctorMeta?[i].name ?? '',
+                                                            style: TextStyle(
+                                                              color: AppColors.PRIMARY_COLOR,
+                                                              fontWeight: FontWeight.w600,
+                                                              fontSize: 12.sp,
                                                             ),
                                                           ),
                                                         ],
@@ -316,45 +322,21 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                 for (int i = 0; i < (presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?.length ?? 0); i++) ...[
                                   SliverToBoxAdapter(
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '${i + 1}. ',
-                                              style: TextStyle(
-                                                color: AppColors.PRIMARY_COLOR,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 6.sp,
-                                              ),
-                                            ),
-                                            Text(
-                                              presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].name ?? '',
-                                              style: TextStyle(
-                                                color: AppColors.PRIMARY_COLOR,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 6.sp,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-                                        ///View
-                                        TextButton(
-                                          onPressed: () {
-                                            Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i]);
-                                          },
-                                          style: TextButton.styleFrom(
-                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                            padding: EdgeInsets.zero,
+                                        Text(
+                                          '${i + 1}. ',
+                                          style: TextStyle(
+                                            color: AppColors.PRIMARY_COLOR,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 6.sp,
                                           ),
-                                          child: Text(
-                                            AppStrings.view.tr,
-                                            style: TextStyle(
-                                              color: AppColors.SECONDARY_COLOR,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 5.sp,
-                                            ),
+                                        ),
+                                        Text(
+                                          presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].name ?? '',
+                                          style: TextStyle(
+                                            color: AppColors.PRIMARY_COLOR,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 6.sp,
                                           ),
                                         ),
                                       ],

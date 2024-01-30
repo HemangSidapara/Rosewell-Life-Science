@@ -51,4 +51,8 @@ class AppStrings {
   static const String pleaseEnterDoctorName = 'Please enter doctor name.';
   static const String noMedicineHasBeenSelected = 'No medicine has been selected.';
   static const String view = 'View';
+  static const String listOfDoctors = 'List of Doctors';
+  static const String pleaseSelectDoctor = 'Please select doctor.';
+  static const String selectDoctor = 'Select Doctor';
+  static const String searchDoctor = 'Search Doctor';
 }

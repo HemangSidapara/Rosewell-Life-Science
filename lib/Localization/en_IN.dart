@@ -52,4 +52,8 @@ Map<String, String> enIN = <String, String>{
   AppStrings.pleaseEnterDoctorName: "Please enter doctor name.",
   AppStrings.noMedicineHasBeenSelected: "No medicine has been selected.",
   AppStrings.view: "View",
+  AppStrings.listOfDoctors: "List of Doctors",
+  AppStrings.pleaseSelectDoctor: "Please select doctor.",
+  AppStrings.selectDoctor: "Select Doctor",
+  AppStrings.searchDoctor: "Search Doctor",
 };
