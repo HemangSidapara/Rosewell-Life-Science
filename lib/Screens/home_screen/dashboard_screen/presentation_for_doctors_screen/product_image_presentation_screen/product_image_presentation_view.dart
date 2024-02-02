@@ -24,6 +24,8 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
   RxBool isInitPortrait = true.obs;
   PageController pageController = PageController(initialPage: 0);
 
+  var timer;
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +50,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
 
   @override
   void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     SystemChrome.setPreferredOrientations([]);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
@@ -58,21 +61,27 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
         statusBarBrightness: Brightness.dark,
       ),
     );
+    timer.cancel();
     super.dispose();
   }
 
   void showAppBar() {
     isAppBarVisible(true);
     isOneOpacity(true);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
 
-    Timer(const Duration(seconds: 3), () {
-      isOneOpacity(false);
-      Future.delayed(
-        const Duration(milliseconds: 300),
-        () {
-          isAppBarVisible(false);
-        },
-      );
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (timer.tick == 3) {
+        timer.cancel();
+        isOneOpacity(false);
+        Future.delayed(
+          const Duration(milliseconds: 300),
+          () {
+            isAppBarVisible(false);
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+          },
+        );
+      }
     });
   }
 

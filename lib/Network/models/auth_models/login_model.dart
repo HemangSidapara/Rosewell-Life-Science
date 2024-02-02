@@ -13,18 +13,24 @@ class LoginModel {
     String? code,
     String? msg,
     String? token,
+    String? role,
+    String? cityName,
     List<Data>? data,
   }) {
     _code = code;
     _msg = msg;
     _token = token;
     _data = data;
+    _role = role;
+    _cityName = cityName;
   }
 
   LoginModel.fromJson(dynamic json) {
     _code = json['code'];
     _msg = json['msg'];
     _token = json['token'];
+    _role = json['role'];
+    _cityName = json['city_name'];
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
@@ -35,11 +41,15 @@ class LoginModel {
   String? _code;
   String? _msg;
   String? _token;
+  String? _role;
+  String? _cityName;
   List<Data>? _data;
   LoginModel copyWith({
     String? code,
     String? msg,
     String? token,
+    String? role,
+    String? cityName,
     List<Data>? data,
   }) =>
       LoginModel(
@@ -47,10 +57,15 @@ class LoginModel {
         msg: msg ?? _msg,
         token: token ?? _token,
         data: data ?? _data,
+        role: role ?? _role,
+        cityName: cityName ?? _cityName,
       );
   String? get code => _code;
   String? get msg => _msg;
+  String? get role => _role;
   String? get token => _token;
+  String? get cityName => _cityName;
+
   List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -58,6 +73,8 @@ class LoginModel {
     map['code'] = _code;
     map['msg'] = _msg;
     map['token'] = _token;
+    map['role'] = _role;
+    map['city_name'] = _cityName;
     if (_data != null) {
       map['Data'] = _data?.map((v) => v.toJson()).toList();
     }

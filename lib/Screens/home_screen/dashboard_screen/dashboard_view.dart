@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rosewell_life_science/Constants/app_assets.dart';
 import 'package:rosewell_life_science/Constants/app_colors.dart';
+import 'package:rosewell_life_science/Constants/app_constance.dart';
 import 'package:rosewell_life_science/Constants/app_strings.dart';
+import 'package:rosewell_life_science/Constants/get_storage.dart';
 import 'package:rosewell_life_science/Routes/app_pages.dart';
 import 'package:rosewell_life_science/Screens/home_screen/dashboard_screen/dashboard_controller.dart';
 import 'package:rosewell_life_science/Screens/home_screen/dashboard_screen/hand_shaken_animation.dart';
@@ -28,6 +30,7 @@ class _DashboardViewState extends State<DashboardView> with AutomaticKeepAliveCl
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 AppStrings.hello.tr,
@@ -35,6 +38,16 @@ class _DashboardViewState extends State<DashboardView> with AutomaticKeepAliveCl
                   color: AppColors.PRIMARY_COLOR,
                   fontSize: context.isPortrait ? 16.sp : 9.sp,
                   fontWeight: FontWeight.w900,
+                ),
+              ),
+              Flexible(
+                child: Text(
+                  getData(AppConstance.cityName) + ' ' ?? '',
+                  style: TextStyle(
+                    color: AppColors.PRIMARY_COLOR,
+                    fontSize: context.isPortrait ? 16.sp : 9.sp,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
               const HandShakenAnimation(),

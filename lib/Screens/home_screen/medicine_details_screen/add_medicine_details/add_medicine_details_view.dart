@@ -187,7 +187,7 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                                   padding: EdgeInsets.symmetric(horizontal: context.isPortrait ? 2.w : 2.h, vertical: context.isPortrait ? 1.h : 1.w),
                                   itemCount: addMedicineDetailsController.pickedImageList.length,
                                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
+                                    crossAxisCount: 2,
                                     childAspectRatio: context.isPortrait ? 1 : 1.12,
                                     crossAxisSpacing: context.isPortrait ? 2.w : 2.h,
                                     mainAxisSpacing: context.isPortrait ? 1.h : 1.w,

@@ -28,11 +28,13 @@ class AuthService {
       onError: (error) {
         Utils.handleMessage(message: error.message, isError: true);
       },
-      onSuccess: (data) {
+      onSuccess: (data) async {
         try {
           final loginModel = loginModelFromJson(jsonEncode(data.response!.data));
           if (data.isSuccess && loginModel.code!.toInt() >= 200 && loginModel.code!.toInt() <= 299) {
             setData(AppConstance.authorizationToken, loginModel.token);
+            setData(AppConstance.role, loginModel.role);
+            await setData(AppConstance.cityName, loginModel.cityName);
             if (kDebugMode) {
               print("login success message :::: ${loginModel.msg}");
             }

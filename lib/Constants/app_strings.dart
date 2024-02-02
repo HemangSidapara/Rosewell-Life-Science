@@ -5,6 +5,9 @@ class AppStrings {
   static const String enterPhoneNumber = 'Enter phone number';
   static const String pleaseEnterPhoneNumber = 'Please enter phone number.';
   static const String pleaseEnterValidPhoneNumber = 'Please enter valid phone number.';
+  static const String cityName = 'City Name';
+  static const String enterCityName = 'Enter city name';
+  static const String pleaseEnterCityName = 'Please enter city name.';
   static const String password = 'Password';
   static const String enterPassword = 'Enter password';
   static const String pleaseEnterPassword = 'Please enter password.';

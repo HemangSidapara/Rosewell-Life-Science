@@ -298,7 +298,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                                   ///Images
                                                   SliverToBoxAdapter(
                                                     child: SizedBox(
-                                                      height: 15.h,
+                                                      height: 22.h,
                                                       child: ListView.builder(
                                                         itemCount: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?[i].productMeta?.length ?? 0,
                                                         scrollDirection: Axis.horizontal,
@@ -308,7 +308,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                                             child: CachedNetworkImage(
                                                               imageUrl: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta![i].productMeta?[innerIndex].image ?? '',
                                                               fit: BoxFit.cover,
-                                                              height: 13.h,
+                                                              height: 20.h,
                                                               progressIndicatorBuilder: (context, url, downloadProgress) {
                                                                 return Center(
                                                                   child: CircularProgressIndicator(
@@ -394,7 +394,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                     padding: EdgeInsets.symmetric(vertical: 2.w),
                                     sliver: SliverGrid.builder(
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
+                                        crossAxisCount: 2,
                                         childAspectRatio: 1.12,
                                         crossAxisSpacing: 2.h,
                                         mainAxisSpacing: 1.w,

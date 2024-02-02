@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rosewell_life_science/Constants/app_constance.dart';
+import 'package:rosewell_life_science/Constants/get_storage.dart';
 import 'package:rosewell_life_science/Routes/nasted_navigator/dashboard_navigator.dart';
 import 'package:rosewell_life_science/Routes/nasted_navigator/medicine_details_navigator.dart';
 import 'package:rosewell_life_science/Routes/nasted_navigator/settings_navigator.dart';
@@ -10,7 +12,7 @@ class HomeController extends GetxController {
 
   List<Widget> bottomItemWidgetList = [
     const DashboardNavigator(),
-    const MedicineDetailsNavigator(),
+    if (getData(AppConstance.role) == 'Admin') const MedicineDetailsNavigator(),
     const SettingsNavigator(),
   ];
 

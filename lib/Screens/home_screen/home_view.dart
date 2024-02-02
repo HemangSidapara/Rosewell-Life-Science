@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rosewell_life_science/Constants/app_assets.dart';
 import 'package:rosewell_life_science/Constants/app_colors.dart';
+import 'package:rosewell_life_science/Constants/app_constance.dart';
 import 'package:rosewell_life_science/Constants/app_strings.dart';
+import 'package:rosewell_life_science/Constants/get_storage.dart';
 import 'package:rosewell_life_science/Screens/home_screen/home_controller.dart';
 import 'package:rosewell_life_science/Utils/app_sizer.dart';
 import 'package:rosewell_life_science/Widgets/button_widget.dart';
@@ -62,7 +64,7 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 AssetImages(index: 0, iconName: AppAssets.homeIcon),
-                AssetImages(index: 1, iconName: AppAssets.medicineDetailsBottomIcon, iconWidthInLandscape: 5.5, iconWidthInPortrait: 7),
+                if (getData(AppConstance.role) == 'Admin') AssetImages(index: 1, iconName: AppAssets.medicineDetailsBottomIcon, iconWidthInLandscape: 5.5, iconWidthInPortrait: 7),
                 AssetImages(index: 2, iconName: AppAssets.settingsIcon, iconWidthInLandscape: 7, iconWidthInPortrait: 8.5),
               ],
             ),

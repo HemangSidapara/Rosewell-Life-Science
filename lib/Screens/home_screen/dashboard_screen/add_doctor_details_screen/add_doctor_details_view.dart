@@ -169,7 +169,7 @@ class _AddDoctorDetailsViewState extends State<AddDoctorDetailsView> {
                 padding: EdgeInsets.symmetric(horizontal: context.isPortrait ? 0 : 5.h),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: 2,
                     childAspectRatio: context.isPortrait ? 1 : 1.12,
                     crossAxisSpacing: context.isPortrait ? 2.w : 2.h,
                     mainAxisSpacing: context.isPortrait ? 1.h : 1.w,

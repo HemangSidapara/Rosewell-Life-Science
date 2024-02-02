@@ -67,7 +67,7 @@ class _SignInViewState extends State<SignInView> {
                   ),
                   SizedBox(height: 2.h),
 
-                  ///Phone Field
+                  ///Fields
                   Form(
                     key: controller.signInFormKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -81,28 +81,62 @@ class _SignInViewState extends State<SignInView> {
                                 ? 0
                                 : 2.w,
                       ),
-                      child: TextFieldWidget(
-                        controller: controller.phoneNumberController,
-                        title: AppStrings.phoneNumber.tr,
-                        hintText: AppStrings.enterPhoneNumber.tr,
-                        keyboardType: TextInputType.number,
-                        textInputAction: TextInputAction.done,
-                        maxLength: 10,
-                        validator: (value) {
-                          return controller.validatePhoneNumber(value!);
-                        },
+                      child: Column(
+                        children: [
+                          ///cityName
+                          TextFieldWidget(
+                            controller: controller.cityNameController,
+                            title: AppStrings.cityName.tr,
+                            hintText: AppStrings.enterCityName.tr,
+                            textInputAction: TextInputAction.next,
+                            maxLength: 30,
+                            validator: (value) {
+                              return controller.validateCityName(value!);
+                            },
+                          ),
+
+                          ///password
+                          Obx(() {
+                            return TextFieldWidget(
+                              controller: controller.passwordController,
+                              title: AppStrings.password.tr,
+                              hintText: AppStrings.enterPassword.tr,
+                              validator: (value) {
+                                return controller.validatePassword(value!);
+                              },
+                              obscureText: !controller.isShowPassword.value,
+                              suffixIconConstraints: BoxConstraints(minWidth: context.isPortrait ? 12.w : 12.h, maxWidth: context.isPortrait ? 12.w : 12.h),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  controller.isShowPassword.toggle();
+                                },
+                                style: IconButton.styleFrom(
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                icon: Icon(
+                                  !controller.isShowPassword.value ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                                  color: AppColors.PRIMARY_COLOR,
+                                  size: context.isPortrait ? 6.w : 4.h,
+                                ),
+                              ),
+                            );
+                          })
+                        ],
                       ),
                     ),
                   ),
 
                   ///Submit
                   if (context.isLandscape)
-                    ButtonWidget(
-                      onPressed: () async {
-                        await controller.checkLogin();
-                      },
-                      buttonTitle: AppStrings.next.tr,
-                    ),
+                    Obx(() {
+                      return ButtonWidget(
+                        onPressed: () async {
+                          await controller.checkLogin();
+                        },
+                        isLoading: controller.isSignInLoading.value,
+                        buttonTitle: AppStrings.next.tr,
+                      );
+                    }),
                 ],
               ),
             ),
@@ -111,12 +145,15 @@ class _SignInViewState extends State<SignInView> {
 
         ///Submit
         if (context.isPortrait)
-          ButtonWidget(
-            onPressed: () async {
-              await controller.checkLogin();
-            },
-            buttonTitle: AppStrings.next.tr,
-          ),
+          Obx(() {
+            return ButtonWidget(
+              onPressed: () async {
+                await controller.checkLogin();
+              },
+              isLoading: controller.isSignInLoading.value,
+              buttonTitle: AppStrings.next.tr,
+            );
+          }),
       ],
     );
   }
