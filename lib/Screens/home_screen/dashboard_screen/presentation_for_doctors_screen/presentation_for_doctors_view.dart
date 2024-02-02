@@ -12,6 +12,7 @@ import 'package:rosewell_life_science/Utils/app_sizer.dart';
 import 'package:rosewell_life_science/Widgets/custom_header_widget.dart';
 import 'package:rosewell_life_science/Widgets/custom_scaffold_widget.dart';
 import 'package:rosewell_life_science/Widgets/loading_widget.dart';
+import 'package:rosewell_life_science/Widgets/textfield_widget.dart';
 
 class PresentationForDoctorsView extends StatefulWidget {
   const PresentationForDoctorsView({super.key});
@@ -22,6 +23,14 @@ class PresentationForDoctorsView extends StatefulWidget {
 
 class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView> with TickerProviderStateMixin {
   PresentationForDoctorsController presentationForDoctorsController = Get.find<PresentationForDoctorsController>();
+
+  @override
+  void initState() {
+    super.initState();
+    presentationForDoctorsController.searchDoctorController.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +92,38 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
           ),
           SizedBox(height: context.isPortrait ? 2.h : 2.w),
 
+          ///Search bar
+          TextFieldWidget(
+            controller: presentationForDoctorsController.searchDoctorController,
+            hintText: AppStrings.searchDoctor.tr,
+            textFieldWidth: context.isPortrait ? null : 43.w,
+            suffixIcon: presentationForDoctorsController.searchDoctorController.text.isNotEmpty
+                ? InkWell(
+                    onTap: () async {
+                      presentationForDoctorsController.searchDoctorController.clear();
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      await getSearchedDoctorList(searchedValue: presentationForDoctorsController.searchDoctorController.text);
+                    },
+                    child: Icon(
+                      Icons.close,
+                      color: AppColors.SECONDARY_COLOR,
+                      size: context.isPortrait ? 4.w : 4.h,
+                    ),
+                  )
+                : null,
+            suffixIconConstraints: BoxConstraints(minWidth: context.isPortrait ? 10.w : 10.h, maxWidth: context.isPortrait ? 10.w : 10.h),
+            prefixIcon: Icon(
+              Icons.search_rounded,
+              color: AppColors.SECONDARY_COLOR,
+              size: context.isPortrait ? 4.w : 4.h,
+            ),
+            prefixIconConstraints: BoxConstraints(minWidth: context.isPortrait ? 10.w : 10.h, maxWidth: context.isPortrait ? 10.w : 10.h),
+            onChanged: (value) async {
+              await getSearchedDoctorList(searchedValue: value);
+            },
+          ),
+          SizedBox(height: context.isPortrait ? 1.h : 1.w),
+
           ///Doctor List
           Expanded(
             child: Obx(() {
@@ -95,7 +136,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                       child: SizedBox(
                         width: context.isPortrait ? null : 43.w,
                         child: Obx(() {
-                          if (presentationForDoctorsController.doctorDataList.isEmpty) {
+                          if (presentationForDoctorsController.searchedDoctorDataList.isEmpty) {
                             return Center(
                               child: Text(
                                 AppStrings.noDataFound.tr,
@@ -109,10 +150,10 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                           } else {
                             return ListView.separated(
                               padding: EdgeInsets.symmetric(vertical: context.isPortrait ? 2.h : 2.w),
-                              itemCount: presentationForDoctorsController.doctorDataList.length,
+                              itemCount: presentationForDoctorsController.searchedDoctorDataList.length,
                               itemBuilder: (context, index) {
                                 return ExpansionTile(
-                                  controller: presentationForDoctorsController.expansionTileControllerList[index],
+                                  controller: presentationForDoctorsController.searchedExpansionTileControllerList[index],
                                   title: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
@@ -127,7 +168,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                             ),
                                           ),
                                           Text(
-                                            presentationForDoctorsController.doctorDataList[index].name ?? '',
+                                            presentationForDoctorsController.searchedDoctorDataList[index].name ?? '',
                                             style: TextStyle(
                                               color: AppColors.PRIMARY_COLOR,
                                               fontWeight: FontWeight.w600,
@@ -140,7 +181,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                       ///View
                                       TextButton(
                                         onPressed: () {
-                                          Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.doctorDataList[index].doctorMeta?.map((e) => e).toList());
+                                          Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?.map((e) => e).toList());
                                         },
                                         style: TextButton.styleFrom(
                                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -160,10 +201,10 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                   iconColor: AppColors.SECONDARY_COLOR,
                                   onExpansionChanged: (value) {
                                     if (value) {
-                                      for (int i = 0; i < presentationForDoctorsController.expansionTileControllerList.length; i++) {
+                                      for (int i = 0; i < presentationForDoctorsController.searchedExpansionTileControllerList.length; i++) {
                                         try {
                                           if (i != index) {
-                                            presentationForDoctorsController.expansionTileControllerList[i].collapse();
+                                            presentationForDoctorsController.searchedExpansionTileControllerList[i].collapse();
                                           } else {
                                             presentationForDoctorsController.expandedIndex(index);
                                           }
@@ -177,7 +218,14 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                   trailing: context.isLandscape
                                       ? Obx(() {
                                           return AnimatedRotation(
-                                            turns: presentationForDoctorsController.expansionTileControllerList[index].isExpanded ? -1 / 4 : 0,
+                                            turns: (() {
+                                              try {
+                                                return presentationForDoctorsController.searchedExpansionTileControllerList[index].isExpanded ? (-1 / 4).toDouble() : 0.toDouble();
+                                              } catch (e) {
+                                                debugPrint('Error At AnimatedRotation: $e');
+                                                return 0.toDouble();
+                                              }
+                                            })(),
                                             duration: const Duration(milliseconds: 150),
                                             child: Icon(
                                               Icons.expand_more,
@@ -220,7 +268,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                             child: CustomScrollView(
                                               shrinkWrap: true,
                                               slivers: [
-                                                for (int i = 0; i < (presentationForDoctorsController.doctorDataList[index].doctorMeta?.length ?? 0); i++) ...[
+                                                for (int i = 0; i < (presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?.length ?? 0); i++) ...[
                                                   SliverToBoxAdapter(
                                                     child: Padding(
                                                       padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -235,7 +283,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                                             ),
                                                           ),
                                                           Text(
-                                                            presentationForDoctorsController.doctorDataList[index].doctorMeta?[i].name ?? '',
+                                                            presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?[i].name ?? '',
                                                             style: TextStyle(
                                                               color: AppColors.PRIMARY_COLOR,
                                                               fontWeight: FontWeight.w600,
@@ -252,13 +300,13 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                                     child: SizedBox(
                                                       height: 15.h,
                                                       child: ListView.builder(
-                                                        itemCount: presentationForDoctorsController.doctorDataList[index].doctorMeta?[i].productMeta?.length ?? 0,
+                                                        itemCount: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?[i].productMeta?.length ?? 0,
                                                         scrollDirection: Axis.horizontal,
                                                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                                                         itemBuilder: (context, innerIndex) {
                                                           return Center(
                                                             child: CachedNetworkImage(
-                                                              imageUrl: presentationForDoctorsController.doctorDataList[index].doctorMeta![i].productMeta?[innerIndex].image ?? '',
+                                                              imageUrl: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta![i].productMeta?[innerIndex].image ?? '',
                                                               fit: BoxFit.cover,
                                                               height: 13.h,
                                                               progressIndicatorBuilder: (context, url, downloadProgress) {
@@ -305,7 +353,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
 
                     ///Image List in Landscape
                     if (context.isLandscape)
-                      if (presentationForDoctorsController.expansionTileControllerList.any(
+                      if (presentationForDoctorsController.searchedExpansionTileControllerList.any(
                         (element) {
                           try {
                             return element.isExpanded == true;
@@ -319,7 +367,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                             padding: EdgeInsets.only(left: 4.h),
                             child: CustomScrollView(
                               slivers: [
-                                for (int i = 0; i < (presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?.length ?? 0); i++) ...[
+                                for (int i = 0; i < (presentationForDoctorsController.searchedDoctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?.length ?? 0); i++) ...[
                                   SliverToBoxAdapter(
                                     child: Row(
                                       children: [
@@ -332,7 +380,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                           ),
                                         ),
                                         Text(
-                                          presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].name ?? '',
+                                          presentationForDoctorsController.searchedDoctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].name ?? '',
                                           style: TextStyle(
                                             color: AppColors.PRIMARY_COLOR,
                                             fontWeight: FontWeight.w600,
@@ -351,11 +399,11 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                         crossAxisSpacing: 2.h,
                                         mainAxisSpacing: 1.w,
                                       ),
-                                      itemCount: presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].productMeta?.length ?? 0,
+                                      itemCount: presentationForDoctorsController.searchedDoctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].productMeta?.length ?? 0,
                                       itemBuilder: (context, innerIndex) {
                                         return Center(
                                           child: CachedNetworkImage(
-                                            imageUrl: presentationForDoctorsController.doctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].productMeta?[innerIndex].image ?? '',
+                                            imageUrl: presentationForDoctorsController.searchedDoctorDataList[presentationForDoctorsController.expandedIndex.value].doctorMeta?[i].productMeta?[innerIndex].image ?? '',
                                             fit: BoxFit.cover,
                                             progressIndicatorBuilder: (context, url, downloadProgress) {
                                               return Center(
@@ -391,5 +439,32 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
         ],
       ),
     );
+  }
+
+  Future<void> getSearchedDoctorList({required String searchedValue}) async {
+    presentationForDoctorsController.searchedDoctorDataList.clear();
+    presentationForDoctorsController.searchedExpansionTileControllerList.clear();
+    if (searchedValue != "") {
+      presentationForDoctorsController.searchedExpansionTileControllerList = RxList.generate(
+          presentationForDoctorsController.doctorDataList
+              .where(
+                (e) {
+                  return e.name?.contains(searchedValue) == true || e.name?.toLowerCase().contains(searchedValue) == true;
+                },
+              )
+              .toList()
+              .length,
+          (index) => ExpansionTileController());
+      presentationForDoctorsController.searchedDoctorDataList.addAll(
+        presentationForDoctorsController.doctorDataList.where(
+          (e) {
+            return e.name?.contains(searchedValue) == true || e.name?.toLowerCase().contains(searchedValue) == true;
+          },
+        ).toList(),
+      );
+    } else {
+      presentationForDoctorsController.searchedDoctorDataList.addAll(presentationForDoctorsController.doctorDataList);
+      presentationForDoctorsController.searchedExpansionTileControllerList = RxList.generate(presentationForDoctorsController.searchedDoctorDataList.length, (index) => ExpansionTileController());
+    }
   }
 }

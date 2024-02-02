@@ -8,8 +8,12 @@ class PresentationForDoctorsController extends GetxController {
   RxBool isRefreshing = false.obs;
   RxDouble ceilValueForRefresh = 0.0.obs;
 
+  TextEditingController searchDoctorController = TextEditingController();
+
   RxList<ExpansionTileController> expansionTileControllerList = RxList();
+  RxList<ExpansionTileController> searchedExpansionTileControllerList = RxList();
   RxList<get_doctor.Data> doctorDataList = RxList();
+  RxList<get_doctor.Data> searchedDoctorDataList = RxList();
   RxInt expandedIndex = (-1).obs;
 
   @override
@@ -25,10 +29,14 @@ class PresentationForDoctorsController extends GetxController {
 
       if (response.isSuccess) {
         get_doctor.GetDoctorModel doctorModel = get_doctor.getDoctorModelFromJson(response.response.toString());
-        doctorDataList.clear();
-        doctorDataList.addAll(doctorModel.data ?? []);
         expansionTileControllerList.clear();
-        expansionTileControllerList = RxList.generate(doctorDataList.length, (index) => ExpansionTileController());
+        searchedExpansionTileControllerList.clear();
+        expansionTileControllerList = RxList.generate(doctorModel.data?.length ?? 0, (index) => ExpansionTileController());
+        searchedExpansionTileControllerList = RxList.generate(doctorModel.data?.length ?? 0, (index) => ExpansionTileController());
+        doctorDataList.clear();
+        searchedDoctorDataList.clear();
+        doctorDataList.addAll(doctorModel.data ?? []);
+        searchedDoctorDataList.addAll(doctorModel.data ?? []);
       }
     } finally {
       isRefreshing(false);

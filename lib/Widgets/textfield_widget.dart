@@ -24,6 +24,7 @@ class TextFieldWidget extends StatefulWidget {
   final void Function(String value)? onFieldSubmitted;
   final double? textFieldWidth;
   final bool readOnly;
+  final BoxConstraints? suffixIconConstraints;
 
   const TextFieldWidget({
     super.key,
@@ -47,6 +48,7 @@ class TextFieldWidget extends StatefulWidget {
     this.onFieldSubmitted,
     this.textFieldWidth,
     this.readOnly = false,
+    this.suffixIconConstraints,
   });
 
   @override
@@ -103,6 +105,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               prefixIcon: widget.prefixIcon,
               fillColor: AppColors.WHITE_COLOR,
               hintText: widget.hintText,
+              suffixIconConstraints: widget.suffixIconConstraints,
               suffixIcon: widget.suffixIcon,
               hintStyle: TextStyle(
                 color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
