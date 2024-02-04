@@ -25,7 +25,7 @@ class _SettingsViewState extends State<SettingsView> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w).copyWith(bottom: 0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,6 +218,19 @@ class _SettingsViewState extends State<SettingsView> with AutomaticKeepAliveClie
               fixedSize: Size(context.isPortrait ? double.maxFinite : 70.w, context.isPortrait ? 5.h : 9.h),
             ),
           ),
+          SizedBox(height: 2.h),
+
+          Center(
+            child: Text(
+              AppStrings.copyrightContext.replaceAll('2024', DateTime.now().year.toString()),
+              style: TextStyle(
+                color: AppColors.BLACK_COLOR.withOpacity(0.25),
+                fontWeight: FontWeight.w700,
+                fontSize: 10.sp,
+              ),
+            ),
+          ),
+          SizedBox(height: 2.h),
         ],
       ),
     );

@@ -58,4 +58,6 @@ class AppStrings {
   static const String pleaseSelectDoctor = 'Please select doctor.';
   static const String selectDoctor = 'Select Doctor';
   static const String searchDoctor = 'Search Doctor';
+  static const String copyrightContext = '©2024 Mindwave Infoway';
+  static const String poweredByMindwaveInfoway = 'powered by Mindwave Infoway';
 }
