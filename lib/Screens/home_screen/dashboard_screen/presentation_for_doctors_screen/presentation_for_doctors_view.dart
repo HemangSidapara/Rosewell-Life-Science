@@ -154,45 +154,54 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                               itemBuilder: (context, index) {
                                 return ExpansionTile(
                                   controller: presentationForDoctorsController.searchedExpansionTileControllerList[index],
+                                  dense: true,
+                                  tilePadding: EdgeInsets.symmetric(horizontal: context.isPortrait ? 2.w : 2.h),
                                   title: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '${index + 1}. ',
-                                            style: TextStyle(
-                                              color: AppColors.PRIMARY_COLOR,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: context.isPortrait ? 12.sp : 6.sp,
+                                      SizedBox(
+                                        width: context.isPortrait ? 60.w : 60.h,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              '${index + 1}. ',
+                                              style: TextStyle(
+                                                color: AppColors.PRIMARY_COLOR,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: context.isPortrait ? 12.sp : 6.sp,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            presentationForDoctorsController.searchedDoctorDataList[index].name ?? '',
-                                            style: TextStyle(
-                                              color: AppColors.PRIMARY_COLOR,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: context.isPortrait ? 12.sp : 6.sp,
+                                            Flexible(
+                                              child: Text(
+                                                presentationForDoctorsController.searchedDoctorDataList[index].name ?? '',
+                                                style: TextStyle(
+                                                  color: AppColors.PRIMARY_COLOR,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: context.isPortrait ? 12.sp : 6.sp,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
 
                                       ///View
-                                      TextButton(
-                                        onPressed: () {
-                                          Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?.map((e) => e).toList());
-                                        },
-                                        style: TextButton.styleFrom(
-                                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                          padding: EdgeInsets.zero,
-                                        ),
-                                        child: Text(
-                                          AppStrings.view.tr,
-                                          style: TextStyle(
-                                            color: AppColors.SECONDARY_COLOR,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: context.isPortrait ? 10.sp : 5.sp,
+                                      Flexible(
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?.map((e) => e).toList());
+                                          },
+                                          style: TextButton.styleFrom(
+                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                            padding: EdgeInsets.zero,
+                                          ),
+                                          child: Text(
+                                            AppStrings.view.tr,
+                                            style: TextStyle(
+                                              color: AppColors.SECONDARY_COLOR,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: context.isPortrait ? 10.sp : 5.sp,
+                                            ),
                                           ),
                                         ),
                                       ),
