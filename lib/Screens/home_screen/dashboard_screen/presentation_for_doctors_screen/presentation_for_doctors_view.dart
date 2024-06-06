@@ -160,7 +160,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
-                                        width: context.isPortrait ? 60.w : 60.h,
+                                        width: context.isPortrait ? 60.w : 50.h,
                                         child: Row(
                                           children: [
                                             Text(
@@ -186,23 +186,18 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                       ),
 
                                       ///View
-                                      Flexible(
-                                        child: TextButton(
-                                          onPressed: () {
-                                            Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?.map((e) => e).toList());
-                                          },
-                                          style: TextButton.styleFrom(
-                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                            padding: EdgeInsets.zero,
-                                          ),
-                                          child: Text(
-                                            AppStrings.view.tr,
-                                            style: TextStyle(
-                                              color: AppColors.SECONDARY_COLOR,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: context.isPortrait ? 10.sp : 5.sp,
-                                            ),
-                                          ),
+                                      IconButton(
+                                        onPressed: () {
+                                          Get.toNamed(Routes.productImagePresentationScreen, arguments: presentationForDoctorsController.searchedDoctorDataList[index].doctorMeta?.map((e) => e).toList());
+                                        },
+                                        style: IconButton.styleFrom(
+                                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                        icon: Icon(
+                                          Icons.remove_red_eye_rounded,
+                                          color: AppColors.SECONDARY_COLOR,
+                                          size: context.isLandscape ? 4.h : 4.w,
                                         ),
                                       ),
                                     ],
@@ -224,25 +219,6 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                     }
                                     setState(() {});
                                   },
-                                  trailing: context.isLandscape
-                                      ? Obx(() {
-                                          return AnimatedRotation(
-                                            turns: (() {
-                                              try {
-                                                return presentationForDoctorsController.searchedExpansionTileControllerList[index].isExpanded ? (-1 / 4).toDouble() : 0.toDouble();
-                                              } catch (e) {
-                                                debugPrint('Error At AnimatedRotation: $e');
-                                                return 0.toDouble();
-                                              }
-                                            })(),
-                                            duration: const Duration(milliseconds: 150),
-                                            child: Icon(
-                                              Icons.expand_more,
-                                              color: AppColors.SECONDARY_COLOR,
-                                            ),
-                                          );
-                                        })
-                                      : null,
                                   collapsedIconColor: AppColors.SECONDARY_COLOR,
                                   collapsedShape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -251,6 +227,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                       width: 1.5,
                                     ),
                                   ),
+                                  trailing: const SizedBox(),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     side: BorderSide(
