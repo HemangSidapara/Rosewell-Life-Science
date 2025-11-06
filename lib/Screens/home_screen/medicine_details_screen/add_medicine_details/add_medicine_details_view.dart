@@ -52,13 +52,7 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///Medicine Name
-                      TextFieldWidget(
-                        controller: addMedicineDetailsController.medicineNameController,
-                        title: AppStrings.medicineName.tr,
-                        hintText: AppStrings.enterMedicineName.tr,
-                        validator: addMedicineDetailsController.validateMedicineName,
-                        maxLength: 50,
-                      ),
+                      TextFieldWidget(controller: addMedicineDetailsController.medicineNameController, title: AppStrings.medicineName.tr, hintText: AppStrings.enterMedicineName.tr, validator: addMedicineDetailsController.validateMedicineName, maxLength: 50),
                       SizedBox(height: 2.h),
 
                       ///upload Images
@@ -83,14 +77,7 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ///Medicine Name
-                          TextFieldWidget(
-                            controller: addMedicineDetailsController.medicineNameController,
-                            title: AppStrings.medicineName.tr,
-                            hintText: AppStrings.enterMedicineName.tr,
-                            validator: addMedicineDetailsController.validateMedicineName,
-                            textFieldWidth: 43.w,
-                            maxLength: 50,
-                          ),
+                          TextFieldWidget(controller: addMedicineDetailsController.medicineNameController, title: AppStrings.medicineName.tr, hintText: AppStrings.enterMedicineName.tr, validator: addMedicineDetailsController.validateMedicineName, textFieldWidth: 43.w, maxLength: 50),
                           SizedBox(height: 2.w),
 
                           ///Add Medicine Button
@@ -118,11 +105,7 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
           padding: EdgeInsets.only(left: context.isPortrait ? 2.w : 1.w),
           child: Text(
             AppStrings.imagesOfMedicine.tr,
-            style: TextStyle(
-              color: AppColors.PRIMARY_COLOR,
-              fontSize: context.isPortrait ? 12.sp : 8.sp,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(color: AppColors.PRIMARY_COLOR, fontSize: context.isPortrait ? 12.sp : 8.sp, fontWeight: FontWeight.w600),
           ),
         ),
         SizedBox(height: 1.h),
@@ -130,10 +113,12 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
           return ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: DottedBorder(
-              color: addMedicineDetailsController.isValidate.isTrue ? AppColors.PRIMARY_COLOR : AppColors.ERROR_COLOR,
-              strokeWidth: 2.5,
-              strokeCap: StrokeCap.butt,
-              dashPattern: const [12, 8],
+              options: CircularDottedBorderOptions(
+                color: addMedicineDetailsController.isValidate.isTrue ? AppColors.PRIMARY_COLOR : AppColors.ERROR_COLOR,
+                strokeWidth: 2.5,
+                strokeCap: StrokeCap.butt,
+                dashPattern: const [12, 8],
+              ),
               child: Obx(() {
                 return InkWell(
                   onTap: addMedicineDetailsController.pickedImageList.isEmpty
@@ -147,38 +132,30 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                       width: context.isPortrait ? double.maxFinite : 43.w,
                       height: context.isPortrait
                           ? addMedicineDetailsController.pickedImageList.isEmpty
-                              ? 12.h
-                              : 51.h
+                                ? 12.h
+                                : 51.h
                           : addMedicineDetailsController.pickedImageList.isEmpty
-                              ? 12.w
-                              : 51.w,
-                      color: AppColors.LIGHT_SECONDARY_COLOR.withOpacity(0.5),
+                          ? 12.w
+                          : 51.w,
+                      color: AppColors.LIGHT_SECONDARY_COLOR.withValues(alpha: 0.5),
                       alignment: Alignment.center,
                       child: AnimatedCrossFade(
                         firstChild: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.library_add_rounded,
-                              color: AppColors.PRIMARY_COLOR,
-                              size: context.isPortrait ? 7.w : 6.h,
-                            ),
+                            Icon(Icons.library_add_rounded, color: AppColors.PRIMARY_COLOR, size: context.isPortrait ? 7.w : 6.h),
                             Text(
                               AppStrings.chooseImagesFromYourDevice.tr,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: AppColors.PRIMARY_COLOR,
-                                fontSize: context.isPortrait ? 12.sp : 6.5.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: TextStyle(color: AppColors.PRIMARY_COLOR, fontSize: context.isPortrait ? 12.sp : 6.5.sp, fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
                         secondChild: Container(
                           width: double.maxFinite,
                           height: context.isPortrait ? 51.h : 51.w,
-                          color: AppColors.LIGHT_SECONDARY_COLOR.withOpacity(0.5),
+                          color: AppColors.LIGHT_SECONDARY_COLOR.withValues(alpha: 0.5),
                           alignment: Alignment.center,
                           child: Column(
                             children: [
@@ -186,23 +163,11 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                                 child: GridView.builder(
                                   padding: EdgeInsets.symmetric(horizontal: context.isPortrait ? 2.w : 2.h, vertical: context.isPortrait ? 1.h : 1.w),
                                   itemCount: addMedicineDetailsController.pickedImageList.length,
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: context.isPortrait ? 1 : 1.12,
-                                    crossAxisSpacing: context.isPortrait ? 2.w : 2.h,
-                                    mainAxisSpacing: context.isPortrait ? 1.h : 1.w,
-                                  ),
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: context.isPortrait ? 1 : 1.12, crossAxisSpacing: context.isPortrait ? 2.w : 2.h, mainAxisSpacing: context.isPortrait ? 1.h : 1.w),
                                   itemBuilder: (context, index) {
                                     return Stack(
                                       children: [
-                                        Center(
-                                          child: Image.file(
-                                            File(
-                                              addMedicineDetailsController.pickedImageList[index],
-                                            ),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
+                                        Center(child: Image.file(File(addMedicineDetailsController.pickedImageList[index]), fit: BoxFit.cover)),
                                         Align(
                                           alignment: Alignment.topRight,
                                           child: SizedBox(
@@ -215,17 +180,11 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                                               },
                                               style: IconButton.styleFrom(
                                                 backgroundColor: AppColors.ERROR_COLOR,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(99),
-                                                ),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
                                                 padding: EdgeInsets.zero,
                                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                               ),
-                                              icon: Icon(
-                                                Icons.close_rounded,
-                                                color: AppColors.WHITE_COLOR,
-                                                size: context.isPortrait ? 4.w : 3.5.h,
-                                              ),
+                                              icon: Icon(Icons.close_rounded, color: AppColors.WHITE_COLOR, size: context.isPortrait ? 4.w : 3.5.h),
                                             ),
                                           ),
                                         ),
@@ -234,10 +193,7 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                                   },
                                 ),
                               ),
-                              Divider(
-                                color: AppColors.PRIMARY_COLOR.withOpacity(0.5),
-                                thickness: 1.5,
-                              ),
+                              Divider(color: AppColors.PRIMARY_COLOR.withValues(alpha: 0.5), thickness: 1.5),
                               InkWell(
                                 onTap: () async {
                                   addMedicineDetailsController.pickedImageList.addAll(await ImagePickerService().pickMultiImage());
@@ -248,18 +204,10 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                                     padding: EdgeInsets.symmetric(vertical: 2.h),
                                     child: Column(
                                       children: [
-                                        Icon(
-                                          Icons.library_add_rounded,
-                                          color: AppColors.PRIMARY_COLOR,
-                                          size: context.isPortrait ? 7.w : 6.h,
-                                        ),
+                                        Icon(Icons.library_add_rounded, color: AppColors.PRIMARY_COLOR, size: context.isPortrait ? 7.w : 6.h),
                                         Text(
                                           AppStrings.addMoreImages.tr,
-                                          style: TextStyle(
-                                            color: AppColors.PRIMARY_COLOR,
-                                            fontSize: context.isPortrait ? 12.sp : 6.5.sp,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                          style: TextStyle(color: AppColors.PRIMARY_COLOR, fontSize: context.isPortrait ? 12.sp : 6.5.sp, fontWeight: FontWeight.w600),
                                         ),
                                       ],
                                     ),
@@ -286,11 +234,7 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
                 padding: EdgeInsets.only(left: context.isPortrait ? 2.5.w : 1.5.w, top: context.isPortrait ? 0.6.h : 0.6.w),
                 child: Text(
                   AppStrings.pleaseChooseImages.tr,
-                  style: TextStyle(
-                    color: AppColors.ERROR_COLOR,
-                    fontSize: context.isPortrait ? 10.sp : 5.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(color: AppColors.ERROR_COLOR, fontSize: context.isPortrait ? 10.sp : 5.sp, fontWeight: FontWeight.w500),
                 ),
               );
             } else {
@@ -309,25 +253,15 @@ class _AddMedicineDetailsViewState extends State<AddMedicineDetailsView> {
         },
         isLoading: addMedicineDetailsController.isAddMedicineLoading.value,
         fixedSize: context.isPortrait ? Size(double.maxFinite, 5.h) : Size(43.w, 8.h),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.add_rounded,
-              size: context.isPortrait ? 5.w : 4.5.h,
-              color: AppColors.WHITE_COLOR,
-            ),
+            Icon(Icons.add_rounded, size: context.isPortrait ? 5.w : 4.5.h, color: AppColors.WHITE_COLOR),
             SizedBox(width: context.isPortrait ? 1.w : 1.h),
             Text(
               AppStrings.add.tr,
-              style: TextStyle(
-                color: AppColors.WHITE_COLOR,
-                fontSize: context.isPortrait ? 12.sp : 6.5.sp,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(color: AppColors.WHITE_COLOR, fontSize: context.isPortrait ? 12.sp : 6.5.sp, fontWeight: FontWeight.w600),
             ),
           ],
         ),

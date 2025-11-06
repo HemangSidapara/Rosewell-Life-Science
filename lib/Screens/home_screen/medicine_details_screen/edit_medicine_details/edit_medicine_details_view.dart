@@ -172,41 +172,49 @@ class _EditMedicineDetailsViewState extends State<EditMedicineDetailsView> {
             width: context.isPortrait ? null : 43.w,
             height: editMedicineDetailsController.isValidate.isFalse && editMedicineDetailsController.selectedMedicine.value == -1
                 ? context.isPortrait
-                    ? 8.h
-                    : 8.w
+                      ? 8.h
+                      : 8.w
                 : context.isPortrait
-                    ? 4.5.h
-                    : 4.5.w,
+                ? 4.5.h
+                : 4.5.w,
             child: Obx(() {
               return DropdownSearch<Data>(
                 key: editMedicineDetailsController.dropdownKey,
                 autoValidateMode: AutovalidateMode.onUserInteraction,
-                asyncItems: (text) async {
+                items: (filter, loadProps) async {
                   return editMedicineDetailsController.getMedicineApiCall(isLoading: false);
                 },
                 selectedItem: editMedicineDetailsController.selectedMedicine.value == -1 ? null : editMedicineDetailsController.medicineDataList[editMedicineDetailsController.selectedMedicine.value],
-                dropdownButtonProps: DropdownButtonProps(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: AppColors.SECONDARY_COLOR,
-                    size: context.isPortrait ? 5.w : 5.h,
+                suffixProps: DropdownSuffixProps(
+                  dropdownButtonProps: DropdownButtonProps(
+                    padding: EdgeInsets.zero,
+                    iconClosed: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: AppColors.SECONDARY_COLOR,
+                      size: context.isPortrait ? 5.w : 5.h,
+                    ),
+                    iconOpened: Icon(
+                      Icons.keyboard_arrow_up_rounded,
+                      color: AppColors.SECONDARY_COLOR,
+                      size: context.isPortrait ? 5.w : 5.h,
+                    ),
                   ),
                 ),
+
                 validator: editMedicineDetailsController.validateMedicineList,
-                dropdownDecoratorProps: DropDownDecoratorProps(
+                decoratorProps: DropDownDecoratorProps(
                   baseStyle: TextStyle(
                     color: AppColors.SECONDARY_COLOR,
                     fontWeight: FontWeight.w600,
                     fontSize: context.isPortrait ? 10.sp : 5.sp,
                   ),
-                  dropdownSearchDecoration: InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     enabled: true,
                     fillColor: AppColors.WHITE_COLOR,
                     hintText: AppStrings.selectMedicine.tr,
                     hintStyle: TextStyle(
-                      color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                      color: AppColors.SECONDARY_COLOR.withValues(alpha: 0.5),
                       fontSize: context.isPortrait ? 10.sp : 5.sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -272,14 +280,14 @@ class _EditMedicineDetailsViewState extends State<EditMedicineDetailsView> {
                       child: Text(
                         AppStrings.noDataFound.tr,
                         style: TextStyle(
-                          color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                          color: AppColors.SECONDARY_COLOR.withValues(alpha: 0.5),
                           fontSize: context.isPortrait ? 10.sp : 5.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     );
                   },
-                  itemBuilder: (context, item, isSelected) {
+                  itemBuilder: (context, item, isDisabled, isSelected) {
                     return Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -412,10 +420,12 @@ class _EditMedicineDetailsViewState extends State<EditMedicineDetailsView> {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: DottedBorder(
-                  color: editMedicineDetailsController.isValidate.isTrue ? AppColors.PRIMARY_COLOR : AppColors.ERROR_COLOR,
-                  strokeWidth: 2.5,
-                  strokeCap: StrokeCap.butt,
-                  dashPattern: const [12, 8],
+                  options: CircularDottedBorderOptions(
+                    color: editMedicineDetailsController.isValidate.isTrue ? AppColors.PRIMARY_COLOR : AppColors.ERROR_COLOR,
+                    strokeWidth: 2.5,
+                    strokeCap: StrokeCap.butt,
+                    dashPattern: const [12, 8],
+                  ),
                   child: Obx(() {
                     return InkWell(
                       onTap: editMedicineDetailsController.oldImageList.isEmpty && editMedicineDetailsController.pickedImageList.isEmpty
@@ -429,12 +439,12 @@ class _EditMedicineDetailsViewState extends State<EditMedicineDetailsView> {
                           width: context.isPortrait ? double.maxFinite : 43.w,
                           height: context.isPortrait
                               ? editMedicineDetailsController.oldImageList.isEmpty && editMedicineDetailsController.pickedImageList.isEmpty
-                                  ? 12.h
-                                  : 51.h
+                                    ? 12.h
+                                    : 51.h
                               : editMedicineDetailsController.oldImageList.isEmpty && editMedicineDetailsController.pickedImageList.isEmpty
-                                  ? 12.w
-                                  : 51.w,
-                          color: AppColors.LIGHT_SECONDARY_COLOR.withOpacity(0.5),
+                              ? 12.w
+                              : 51.w,
+                          color: AppColors.LIGHT_SECONDARY_COLOR.withValues(alpha: 0.5),
                           alignment: Alignment.center,
                           child: AnimatedCrossFade(
                             firstChild: Column(
@@ -460,7 +470,7 @@ class _EditMedicineDetailsViewState extends State<EditMedicineDetailsView> {
                             secondChild: Container(
                               width: double.maxFinite,
                               height: context.isPortrait ? 51.h : 51.w,
-                              color: AppColors.LIGHT_SECONDARY_COLOR.withOpacity(0.5),
+                              color: AppColors.LIGHT_SECONDARY_COLOR.withValues(alpha: 0.5),
                               alignment: Alignment.center,
                               child: Column(
                                 children: [
@@ -545,7 +555,7 @@ class _EditMedicineDetailsViewState extends State<EditMedicineDetailsView> {
                                     ),
                                   ),
                                   Divider(
-                                    color: AppColors.PRIMARY_COLOR.withOpacity(0.5),
+                                    color: AppColors.PRIMARY_COLOR.withValues(alpha: 0.5),
                                     thickness: 1.5,
                                   ),
                                   InkWell(
