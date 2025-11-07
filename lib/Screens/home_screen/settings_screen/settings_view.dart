@@ -200,7 +200,7 @@ class _SettingsViewState extends State<SettingsView> with AutomaticKeepAliveClie
                     ],
                   ),
                 );
-              })
+              }),
             ],
           ),
 
@@ -224,7 +224,7 @@ class _SettingsViewState extends State<SettingsView> with AutomaticKeepAliveClie
             child: Text(
               AppStrings.copyrightContext.replaceAll('2024', DateTime.now().year.toString()),
               style: TextStyle(
-                color: AppColors.BLACK_COLOR.withOpacity(0.25),
+                color: AppColors.BLACK_COLOR.withValues(alpha: 0.25),
                 fontWeight: FontWeight.w700,
                 fontSize: 10.sp,
               ),

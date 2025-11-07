@@ -88,7 +88,7 @@ class _DashboardViewState extends State<DashboardView> with AutomaticKeepAliveCl
                       ),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppColors.PRIMARY_COLOR.withOpacity(0.35),
+                          color: AppColors.PRIMARY_COLOR.withValues(alpha: 0.35),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
@@ -162,7 +162,7 @@ class _DashboardViewState extends State<DashboardView> with AutomaticKeepAliveCl
                           ),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: AppColors.PRIMARY_COLOR.withOpacity(0.35),
+                              color: AppColors.PRIMARY_COLOR.withValues(alpha: 0.35),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             padding: EdgeInsets.symmetric(horizontal: context.isPortrait ? 3.w : 3.h, vertical: context.isPortrait ? 2.h : 2.w).copyWith(bottom: context.isPortrait ? 0.5.h : 0.5.w, right: context.isPortrait ? 2.w : 2.h),

@@ -63,7 +63,7 @@ extension RupeesFormatterFromString on String {
   }
 }
 
-indianRupeesFormat({String? symbol}) => NumberFormat.currency(name: "INR", locale: 'en_IN', decimalDigits: 0, symbol: symbol ?? '');
+NumberFormat indianRupeesFormat({String? symbol}) => NumberFormat.currency(name: "INR", locale: 'en_IN', decimalDigits: 0, symbol: symbol ?? '');
 
 extension RupeesGrandTotalFromList on List {
   String grandTotal() {
@@ -85,4 +85,6 @@ extension NotContainsAndAddSubString on String {
       return this;
     }
   }
+
+  String? get cleanFileName => replaceAll("/", "_").replaceAll(" ", "_").replaceAll(RegExp(r'[\\:*?"<>|]'), "");
 }

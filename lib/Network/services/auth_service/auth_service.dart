@@ -10,9 +10,37 @@ import 'package:rosewell_life_science/Constants/app_utils.dart';
 import 'package:rosewell_life_science/Constants/get_storage.dart';
 import 'package:rosewell_life_science/Network/api_base_helper.dart';
 import 'package:rosewell_life_science/Network/models/auth_models/login_model.dart';
+import 'package:rosewell_life_science/Network/response_model.dart';
 import 'package:rosewell_life_science/Utils/app_formatter.dart';
 
 class AuthService {
+  ///Get In App Data Service
+  static Future<ResponseModel> getInAppDataService() async {
+    final response = await ApiBaseHelper.getHTTP(
+      ApiUrls.getInAppDataApi,
+      showProgress: false,
+      onError: (dioExceptions) {
+        if (kDebugMode) {
+          print("❌ getInAppDataApi OnError: ${dioExceptions.message}");
+        }
+        Utils.handleMessage(message: dioExceptions.message, isError: true);
+      },
+      onSuccess: (res) async {
+        if (res.isSuccess) {
+          if (kDebugMode) {
+            print("✅ getInAppDataApi Success: ${res.message}");
+          }
+        } else {
+          if (kDebugMode) {
+            print("❌ getInAppDataApi Error: ${res.message}");
+          }
+        }
+      },
+    );
+
+    return response;
+  }
+
   ///login Service
   Future<bool> loginService({
     required String phone,
@@ -22,7 +50,7 @@ class AuthService {
       ApiKeys.phone: phone,
       ApiKeys.password: password,
     };
-    final response = await ApiBaseHelper().postHTTP(
+    final response = await ApiBaseHelper.postHTTP(
       ApiUrls.loginApi,
       showProgress: false,
       onError: (error) {

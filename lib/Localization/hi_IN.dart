@@ -58,4 +58,6 @@ Map<String, String> hiIN = <String, String>{
   AppStrings.pleaseSelectDoctor: "कृपया डॉक्टर का चयन करें।",
   AppStrings.selectDoctor: "डॉक्टर का चयन करें",
   AppStrings.searchDoctor: "डॉक्टर खोजें",
+  AppStrings.newVersionAvailable: "एक नया संस्करण उपलब्ध है। कृपया इसे अपडेट करें।",
+  AppStrings.update: "अपडेट करें",
 };

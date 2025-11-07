@@ -57,4 +57,6 @@ Map<String, String> guIN = <String, String>{
   AppStrings.pleaseSelectDoctor: "કૃપા કરીને ડૉક્ટર પસંદ કરો.",
   AppStrings.selectDoctor: "ડૉક્ટર પસંદ કરો",
   AppStrings.searchDoctor: "ડૉક્ટર શોધો",
+  AppStrings.newVersionAvailable: 'નવું સંસ્કરણ ઉપલબ્ધ છે. કૃપા કરીને તેમાં અપગ્રેડ કરો.',
+  AppStrings.update: 'અપડેટ કરો',
 };

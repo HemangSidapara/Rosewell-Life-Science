@@ -4,14 +4,14 @@ import 'package:rosewell_life_science/Constants/api_keys.dart';
 import 'package:rosewell_life_science/Constants/api_urls.dart';
 import 'package:rosewell_life_science/Constants/app_strings.dart';
 import 'package:rosewell_life_science/Constants/app_utils.dart';
-import 'package:rosewell_life_science/Network/ResponseModel.dart';
 import 'package:rosewell_life_science/Network/api_base_helper.dart';
+import 'package:rosewell_life_science/Network/response_model.dart';
 import 'package:rosewell_life_science/Utils/app_formatter.dart';
 
 class DoctorDetailsService {
   ///Get Doctors Service
   Future<ResponseModel> getDoctorsService() async {
-    final response = await ApiBaseHelper().getHTTP(
+    final response = await ApiBaseHelper.getHTTP(
       ApiUrls.getDoctorApi,
       showProgress: false,
       onError: (error) {
@@ -47,7 +47,7 @@ class DoctorDetailsService {
       ApiKeys.doctorName: doctorName,
       ApiKeys.product: product,
     };
-    final response = await ApiBaseHelper().postHTTP(
+    final response = await ApiBaseHelper.postHTTP(
       ApiUrls.addDoctorApi,
       showProgress: false,
       onError: (error) {
@@ -88,7 +88,7 @@ class DoctorDetailsService {
       ApiKeys.doctorName: doctorName,
       ApiKeys.product: product,
     };
-    final response = await ApiBaseHelper().postHTTP(
+    final response = await ApiBaseHelper.postHTTP(
       ApiUrls.updateDoctorApi,
       showProgress: false,
       onError: (error) {
@@ -125,7 +125,7 @@ class DoctorDetailsService {
     final params = {
       ApiKeys.dID: dID,
     };
-    final response = await ApiBaseHelper().deleteHTTP(
+    final response = await ApiBaseHelper.deleteHTTP(
       ApiUrls.deleteDoctorApi,
       showProgress: false,
       onError: (error) {

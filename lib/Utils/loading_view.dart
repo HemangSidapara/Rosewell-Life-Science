@@ -22,8 +22,8 @@ class LoadingProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => isDisMissile,
+    return PopScope(
+      canPop: isDisMissile,
       child: Container(
         color: color,
         width: width,

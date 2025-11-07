@@ -206,6 +206,9 @@ class _EditDoctorDetailsViewState extends State<EditDoctorDetailsView> {
                     contentPadding: EdgeInsets.symmetric(horizontal: context.isPortrait ? 3.w : 3.h, vertical: context.isPortrait ? 0 : 0.8.w).copyWith(right: context.isPortrait ? 1.w : 1.h),
                   ),
                 ),
+                compareFn: (item1, item2) {
+                  return item1.dId == item2.dId;
+                },
                 itemAsString: (item) {
                   return item.name ?? '';
                 },
@@ -426,7 +429,6 @@ class _EditDoctorDetailsViewState extends State<EditDoctorDetailsView> {
                   filled: true,
                   enabled: true,
                   fillColor: AppColors.WHITE_COLOR,
-                  hintText: AppStrings.selectMedicine.tr,
                   hintStyle: TextStyle(color: AppColors.SECONDARY_COLOR.withValues(alpha: 0.5), fontSize: context.isPortrait ? 10.sp : 5.sp, fontWeight: FontWeight.w600),
                   errorStyle: TextStyle(color: AppColors.ERROR_COLOR, fontSize: context.isPortrait ? 10.sp : 5.sp, fontWeight: FontWeight.w500),
                   border: OutlineInputBorder(
@@ -510,27 +512,26 @@ class _EditDoctorDetailsViewState extends State<EditDoctorDetailsView> {
                     ),
                   );
                 },
-
-                // selectionWidget: (context, item, isSelected) {
-                //   return InkWell(
-                //     onTap: () {
-                //       setState(() {
-                //         isSelected = !isSelected;
-                //       });
-                //     },
-                //     child: AnimatedContainer(
-                //       duration: const Duration(milliseconds: 300),
-                //       padding: const EdgeInsets.all(1.5),
-                //       margin: EdgeInsets.only(right: context.isPortrait ? 4.w : 4.h),
-                //       decoration: BoxDecoration(
-                //         color: isSelected ? AppColors.PRIMARY_COLOR : AppColors.TRANSPARENT,
-                //         border: Border.all(color: AppColors.PRIMARY_COLOR, width: 2),
-                //         shape: BoxShape.circle,
-                //       ),
-                //       child: Icon(Icons.check, color: AppColors.WHITE_COLOR, size: context.isPortrait ? 4.3.w : 4.3.h),
-                //     ),
-                //   );
-                // },
+                checkBoxBuilder: (context, item, isDisabled, isSelected) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        isSelected = !isSelected;
+                      });
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.all(1.5),
+                      margin: EdgeInsets.only(right: context.isPortrait ? 4.w : 4.h),
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppColors.PRIMARY_COLOR : AppColors.TRANSPARENT,
+                        border: Border.all(color: AppColors.PRIMARY_COLOR, width: 2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.check, color: AppColors.WHITE_COLOR, size: context.isPortrait ? 4.3.w : 4.3.h),
+                    ),
+                  );
+                },
               ),
               dropdownBuilder: (context, selectedItems) {
                 selectedItems.clear();

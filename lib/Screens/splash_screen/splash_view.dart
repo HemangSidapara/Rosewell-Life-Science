@@ -8,7 +8,7 @@ import 'package:rosewell_life_science/Screens/splash_screen/splash_controller.da
 import 'package:rosewell_life_science/Utils/app_sizer.dart';
 
 class SplashView extends StatefulWidget {
-  const SplashView({Key? key}) : super(key: key);
+  const SplashView({super.key});
 
   @override
   State<SplashView> createState() => _SplashViewState();
@@ -20,10 +20,12 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: AppColors.TRANSPARENT,
-      systemNavigationBarIconBrightness: Brightness.light,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: AppColors.TRANSPARENT,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
   }
 
   @override
@@ -42,7 +44,7 @@ class _SplashViewState extends State<SplashView> {
           Text(
             AppStrings.poweredByMindwaveInfoway,
             style: TextStyle(
-              color: AppColors.BLACK_COLOR.withOpacity(0.25),
+              color: AppColors.BLACK_COLOR.withValues(alpha: 0.25),
               fontWeight: FontWeight.w700,
               fontSize: 10.sp,
             ),

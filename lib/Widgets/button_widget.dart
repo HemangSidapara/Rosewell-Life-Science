@@ -11,6 +11,7 @@ class ButtonWidget extends StatefulWidget {
   final OutlinedBorder? shape;
   final bool isLoading;
   final Color? buttonColor;
+  final Widget? loaderWidget;
 
   const ButtonWidget({
     super.key,
@@ -21,6 +22,7 @@ class ButtonWidget extends StatefulWidget {
     this.shape,
     this.isLoading = false,
     this.buttonColor,
+    this.loaderWidget,
   });
 
   @override
@@ -36,31 +38,33 @@ class _ButtonWidgetState extends State<ButtonWidget> {
         backgroundColor: widget.buttonColor ?? AppColors.PRIMARY_COLOR,
         surfaceTintColor: widget.isLoading ? AppColors.PRIMARY_COLOR : null,
         elevation: 4,
-        shadowColor: AppColors.WHITE_COLOR.withOpacity(0.7),
+        shadowColor: AppColors.WHITE_COLOR.withValues(alpha: 0.7),
         fixedSize: widget.fixedSize ?? Size(context.isPortrait ? 84.w : 50.w, context.isPortrait ? 5.h : 9.h),
-        shape: widget.shape ??
+        shape:
+            widget.shape ??
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
       ),
       child: widget.isLoading
-          ? SizedBox(
-              height: context.isPortrait ? 5.w : 5.h,
-              width: context.isPortrait ? 5.w : 5.h,
-              child: CircularProgressIndicator(
-                color: AppColors.WHITE_COLOR,
-                strokeWidth: 1.6,
-              ),
-            )
+          ? widget.loaderWidget ??
+                SizedBox(
+                  height: context.isPortrait ? 5.w : 5.h,
+                  width: context.isPortrait ? 5.w : 5.h,
+                  child: CircularProgressIndicator(
+                    color: AppColors.WHITE_COLOR,
+                    strokeWidth: 1.6,
+                  ),
+                )
           : widget.child ??
-              Text(
-                widget.buttonTitle,
-                style: TextStyle(
-                  color: AppColors.WHITE_COLOR,
-                  fontSize: context.isPortrait ? 12.sp : 6.5.sp,
-                  fontWeight: FontWeight.w600,
+                Text(
+                  widget.buttonTitle,
+                  style: TextStyle(
+                    color: AppColors.WHITE_COLOR,
+                    fontSize: context.isPortrait ? 12.sp : 6.5.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
     );
   }
 }

@@ -59,4 +59,6 @@ Map<String, String> enIN = <String, String>{
   AppStrings.pleaseSelectDoctor: "Please select doctor.",
   AppStrings.selectDoctor: "Select Doctor",
   AppStrings.searchDoctor: "Search Doctor",
+  AppStrings.newVersionAvailable: 'A new version is available. Please upgrade to it.',
+  AppStrings.update: 'Update',
 };

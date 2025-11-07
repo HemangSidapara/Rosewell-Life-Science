@@ -11,4 +11,7 @@ class ApiUrls {
   static const String addDoctorApi = '${_apiPath}addDoctor';
   static const String updateDoctorApi = '${_apiPath}updateDoctor';
   static const String deleteDoctorApi = '${_apiPath}deleteDoctor';
+
+  ///Settings Apis
+  static const String getInAppDataApi = '${_apiPath}InAppUpdate';
 }

@@ -7,4 +7,5 @@ class AppConstance {
   static const String languageCountryCode = "languageCountryCode";
   static const String role = "role";
   static const String cityName = "cityName";
+  static const String androidDownloadPath = "/storage/emulated/0/Download";
 }

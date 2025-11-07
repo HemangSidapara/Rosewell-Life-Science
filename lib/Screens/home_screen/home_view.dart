@@ -38,16 +38,18 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) async {
-        if (Get.keys[0]?.currentState?.canPop() == true) {
-          controller.onBottomItemChange(index: 0);
-        } else if (Get.keys[1]?.currentState?.canPop() == true) {
-          controller.onBottomItemChange(index: 1);
-        } else {
-          if (controller.bottomIndex.value != 0) {
+      onPopInvokedWithResult: (didPop, result) async {
+        if (!didPop) {
+          if (Get.keys[0]?.currentState?.canPop() == true) {
             controller.onBottomItemChange(index: 0);
-          } else if (Get.keys[0]?.currentState?.canPop() != true) {
-            showExitDialog();
+          } else if (Get.keys[1]?.currentState?.canPop() == true) {
+            controller.onBottomItemChange(index: 1);
+          } else {
+            if (controller.bottomIndex.value != 0) {
+              controller.onBottomItemChange(index: 0);
+            } else if (Get.keys[0]?.currentState?.canPop() != true) {
+              showExitDialog();
+            }
           }
         }
       },
@@ -58,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
           extendBodyBehindAppBar: true,
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
-              color: AppColors.PRIMARY_COLOR.withOpacity(0.5),
+              color: AppColors.PRIMARY_COLOR.withValues(alpha: 0.5),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -116,7 +118,7 @@ class _HomeViewState extends State<HomeView> {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'string',
-      transitionDuration: const Duration(milliseconds: 600),
+      transitionDuration: const Duration(milliseconds: 375),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         return SlideTransition(
           position: Tween(

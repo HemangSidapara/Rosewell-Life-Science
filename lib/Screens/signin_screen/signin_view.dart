@@ -73,11 +73,11 @@ class _SignInViewState extends State<SignInView> {
                     padding: EdgeInsets.only(
                       bottom: MediaQuery.viewInsetsOf(context).bottom != 0
                           ? context.isPortrait
-                              ? 2.h
-                              : 2.w
+                                ? 2.h
+                                : 2.w
                           : context.isPortrait
-                              ? 0
-                              : 2.w,
+                          ? 0
+                          : 2.w,
                     ),
                     child: Column(
                       children: [
@@ -92,6 +92,7 @@ class _SignInViewState extends State<SignInView> {
                             return controller.validateCityName(value!);
                           },
                         ),
+                        SizedBox(height: context.isPortrait ? 2.h : 2.w),
 
                         ///password
                         Obx(() {
@@ -118,7 +119,7 @@ class _SignInViewState extends State<SignInView> {
                               ),
                             ),
                           );
-                        })
+                        }),
                       ],
                     ),
                   ),

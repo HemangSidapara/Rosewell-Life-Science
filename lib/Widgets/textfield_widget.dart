@@ -63,7 +63,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.title != null)
+          if (widget.title != null) ...[
             Padding(
               padding: EdgeInsets.only(left: context.isPortrait ? 2.w : 1.w),
               child: Text(
@@ -75,7 +75,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                 ),
               ),
             ),
-          SizedBox(height: 1.h),
+            SizedBox(height: 0.7.h),
+          ],
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: widget.controller,
@@ -108,7 +109,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               suffixIconConstraints: widget.suffixIconConstraints,
               suffixIcon: widget.suffixIcon,
               hintStyle: TextStyle(
-                color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                color: AppColors.SECONDARY_COLOR.withValues(alpha: 0.5),
                 fontSize: context.isPortrait ? 10.sp : 5.sp,
                 fontWeight: FontWeight.w600,
               ),

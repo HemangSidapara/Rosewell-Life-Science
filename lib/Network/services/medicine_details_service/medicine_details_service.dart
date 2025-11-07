@@ -5,15 +5,15 @@ import 'package:rosewell_life_science/Constants/api_keys.dart';
 import 'package:rosewell_life_science/Constants/api_urls.dart';
 import 'package:rosewell_life_science/Constants/app_strings.dart';
 import 'package:rosewell_life_science/Constants/app_utils.dart';
-import 'package:rosewell_life_science/Network/ResponseModel.dart';
 import 'package:rosewell_life_science/Network/api_base_helper.dart';
 import 'package:rosewell_life_science/Network/models/medicine_details_models/get_medicine_model.dart' as get_medicine;
+import 'package:rosewell_life_science/Network/response_model.dart';
 import 'package:rosewell_life_science/Utils/app_formatter.dart';
 
 class MedicineDetailsService {
   ///Get Medicine Service
   Future<ResponseModel> getMedicineService() async {
-    final response = await ApiBaseHelper().getHTTP(
+    final response = await ApiBaseHelper.getHTTP(
       ApiUrls.getMedicineApi,
       showProgress: false,
       onError: (error) {
@@ -56,7 +56,7 @@ class MedicineDetailsService {
       ],
       ApiKeys.medicineName: medicineName,
     });
-    final response = await ApiBaseHelper().postHTTP(
+    final response = await ApiBaseHelper.postHTTP(
       ApiUrls.addMedicineApi,
       showProgress: false,
       options: Options(contentType: Headers.multipartFormDataContentType),
@@ -107,7 +107,7 @@ class MedicineDetailsService {
       ApiKeys.medicineName: medicineName,
       ApiKeys.pID: pID,
     });
-    final response = await ApiBaseHelper().postHTTP(
+    final response = await ApiBaseHelper.postHTTP(
       ApiUrls.updateMedicineApi,
       showProgress: false,
       options: Options(contentType: Headers.multipartFormDataContentType),
@@ -145,7 +145,7 @@ class MedicineDetailsService {
     final params = {
       ApiKeys.pID: pID,
     };
-    final response = await ApiBaseHelper().deleteHTTP(
+    final response = await ApiBaseHelper.deleteHTTP(
       ApiUrls.deleteMedicineApi,
       showProgress: false,
       onError: (error) {

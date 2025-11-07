@@ -1,24 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:rosewell_life_science/Constants/api_urls.dart';
 import 'package:rosewell_life_science/Constants/app_constance.dart';
 import 'package:rosewell_life_science/Constants/get_storage.dart';
 import 'package:rosewell_life_science/Utils/progress_dialog.dart';
 import 'package:rosewell_life_science/Utils/utils.dart';
 
-import 'ResponseModel.dart';
+import 'response_model.dart';
 
 class ApiBaseHelper {
   static const String baseUrl = ApiUrls.baseUrl;
-  static bool showProgressDialog = true;
+  static Stopwatch stopWatch = Stopwatch();
 
   static BaseOptions opts = BaseOptions(
     baseUrl: baseUrl,
     responseType: ResponseType.json,
-    connectTimeout: const Duration(milliseconds: 45000),
-    receiveTimeout: const Duration(milliseconds: 45000),
-    sendTimeout: const Duration(milliseconds: 4500),
+    connectTimeout: const Duration(seconds: 45),
+    receiveTimeout: const Duration(seconds: 45),
+    sendTimeout: const Duration(seconds: 45),
   );
 
   static Dio createDio() {
@@ -27,47 +28,25 @@ class ApiBaseHelper {
 
   static Dio addInterceptors(Dio dio) {
     ///For Print Logs
-    if (!kReleaseMode) {
-      dio.interceptors.add(
-        LogInterceptor(
-          request: true,
-          error: true,
-          responseHeader: true,
-        ),
-      );
-    }
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        enabled: kDebugMode,
+      ),
+    );
 
     ///For Show Hide Progress Dialog
     return dio
       ..interceptors.add(
         InterceptorsWrapper(
           onRequest: (RequestOptions options, handler) async {
-            if (Get.isSnackbarOpen) {
-              await Get.closeCurrentSnackbar();
-            }
-            if (showProgressDialog) ProgressDialog.showProgressDialog(true);
-            Logger.printLog(tag: '|---------------> ${options.method} JSON METHOD <---------------|\n\n REQUEST_URL :', printLog: '\n ${options.uri} \n\n REQUEST_HEADER : ${options.headers}  \n\n REQUEST_DATA : ${options.data.toString()}', logIcon: Logger.info);
-            requestInterceptor(options, handler);
+            return requestInterceptor(options, handler);
           },
-          onResponse: (response, handler) {
-            ProgressDialog.showProgressDialog(false);
-            showProgressDialog = true;
-
-            if (response.statusCode! >= 100 && response.statusCode! <= 199) {
-              Logger.printLog(tag: 'WARNING CODE ${response.statusCode} : ', printLog: response.data.toString(), logIcon: Logger.warning);
-            } else {
-              Logger.printLog(tag: 'SUCCESS CODE ${response.statusCode} : ', printLog: response.data.toString(), logIcon: Logger.success);
-            }
-
-            /// change after upgrade
+          onResponse: (response, handler) async {
             return handler.next(response);
           },
           onError: (DioException e, handler) async {
-            ProgressDialog.showProgressDialog(false);
-            showProgressDialog = true;
-
-            Logger.printLog(tag: 'ERROR CODE ${e.response?.statusCode} : ', printLog: e.toString(), logIcon: Logger.error);
-
             return handler.next(e);
           },
         ),
@@ -75,17 +54,29 @@ class ApiBaseHelper {
   }
 
   static dynamic requestInterceptor(RequestOptions options, RequestInterceptorHandler handler) async {
-    // Get your JWT token
-
-    options.headers.addAll({"Authorization": "Bearer ${getData(AppConstance.authorizationToken)}"});
-
     return handler.next(options);
+  }
+
+  static Future<void> showOrRemoveProgressFunction({required bool showProgress, bool isRemove = false}) async {
+    if (showProgress && Get.isSnackbarOpen) {
+      await Get.closeCurrentSnackbar();
+    }
+    if (showProgress) Get.put(ProgressDialog()).showProgressDialog(!isRemove);
+    if (showProgress && isRemove) Get.delete<ProgressDialog>();
+  }
+
+  static Options getOptions({Options? options}) {
+    Options newOptions = options ?? Options();
+    final headers = newOptions.headers ?? {};
+    headers.putIfAbsent("Authorization", () => "Bearer ${getData(AppConstance.authorizationToken)}");
+    headers.putIfAbsent("content-type", () => "application/json");
+    return newOptions.copyWith(headers: headers);
   }
 
   static final dio = createDio();
   static final baseAPI = addInterceptors(dio);
 
-  Future<ResponseModel> postHTTP(
+  static Future<ResponseModel> postHTTP(
     String url, {
     dynamic params,
     bool showProgress = true,
@@ -93,95 +84,144 @@ class ApiBaseHelper {
     Function(DioExceptions dioExceptions)? onError,
     void Function(int, int)? onSendProgress,
     Options? options,
+    CancelToken? cancelToken,
   }) async {
     try {
-      showProgressDialog = showProgress;
+      stopWatch.start();
+      await showOrRemoveProgressFunction(showProgress: showProgress);
       Response response = await baseAPI.post(
         url,
         data: params,
         onSendProgress: onSendProgress,
-        options: options,
+        cancelToken: cancelToken,
+        options: getOptions(options: options),
       );
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
+      stopWatch.stop();
+      Logger.printLog(isTimer: true, printLog: stopWatch.elapsed.inMilliseconds / 1000);
+      stopWatch.reset();
       return handleResponse(response, onError!, onSuccess!);
     } on DioException catch (e) {
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
       return handleError(e, onError!, onSuccess!);
     }
   }
 
-  Future<ResponseModel> deleteHTTP(
+  static Future<ResponseModel> deleteHTTP(
     String url, {
     dynamic params,
     bool showProgress = true,
     Function(ResponseModel res)? onSuccess,
     Function(DioExceptions dioExceptions)? onError,
+    CancelToken? cancelToken,
+    Options? options,
   }) async {
     try {
-      showProgressDialog = showProgress;
+      stopWatch.start();
+      await showOrRemoveProgressFunction(showProgress: showProgress);
       Response response = await baseAPI.delete(
         url,
         data: params,
+        cancelToken: cancelToken,
+        options: getOptions(options: options),
       );
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
+      stopWatch.stop();
+      Logger.printLog(isTimer: true, printLog: stopWatch.elapsed.inMilliseconds / 1000);
+      stopWatch.reset();
       return handleResponse(response, onError!, onSuccess!);
     } on DioException catch (e) {
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
       return handleError(e, onError!, onSuccess!);
     }
   }
 
-  Future<ResponseModel> getHTTP(
+  static Future<ResponseModel> getHTTP(
     String url, {
     dynamic params,
     bool showProgress = true,
     Function(ResponseModel res)? onSuccess,
     Function(DioExceptions dioExceptions)? onError,
+    CancelToken? cancelToken,
+    Options? options,
   }) async {
     try {
-      showProgressDialog = showProgress;
-      Response response = await baseAPI.get(url, queryParameters: params);
-
+      stopWatch.start();
+      await showOrRemoveProgressFunction(showProgress: showProgress);
+      Response response = await baseAPI.get(
+        url,
+        queryParameters: params,
+        cancelToken: cancelToken,
+        options: getOptions(options: options),
+      );
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
+      stopWatch.stop();
+      Logger.printLog(isTimer: true, printLog: stopWatch.elapsed.inMilliseconds / 1000);
+      stopWatch.reset();
       return handleResponse(response, onError!, onSuccess!);
     } on DioException catch (e) {
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
       return handleError(e, onError!, onSuccess!);
     }
   }
 
-  Future<ResponseModel> putHTTP(
+  static Future<ResponseModel> putHTTP(
     String url, {
     dynamic data,
     bool showProgress = true,
     Function(ResponseModel res)? onSuccess,
     Function(DioExceptions dioExceptions)? onError,
+    Options? options,
   }) async {
     try {
-      showProgressDialog = showProgress;
-      Response response = await baseAPI.put(url, data: data);
+      stopWatch.start();
+      await showOrRemoveProgressFunction(showProgress: showProgress);
+      Response response = await baseAPI.put(
+        url,
+        data: data,
+        options: getOptions(options: options),
+      );
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
+      stopWatch.stop();
+      Logger.printLog(isTimer: true, printLog: stopWatch.elapsed.inMilliseconds / 1000);
+      stopWatch.reset();
       return handleResponse(response, onError!, onSuccess!);
     } on DioException catch (e) {
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
       return handleError(e, onError!, onSuccess!);
     }
   }
 
-  Future<ResponseModel> patchHTTP(
+  static Future<ResponseModel> patchHTTP(
     String url, {
     dynamic params,
     bool showProgress = true,
     Function(ResponseModel res)? onSuccess,
     Function(DioExceptions dioExceptions)? onError,
     void Function(int count, int total)? onSendProgress,
+    Options? options,
   }) async {
     try {
-      showProgressDialog = showProgress;
+      stopWatch.start();
+      await showOrRemoveProgressFunction(showProgress: showProgress);
       Response response = await baseAPI.patch(
         url,
         data: params,
         onSendProgress: onSendProgress,
+        options: getOptions(options: options),
       );
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
+      stopWatch.stop();
+      Logger.printLog(isTimer: true, printLog: stopWatch.elapsed.inMilliseconds / 1000);
+      stopWatch.reset();
       return handleResponse(response, onError!, onSuccess!);
     } on DioException catch (e) {
+      await showOrRemoveProgressFunction(showProgress: showProgress, isRemove: true);
       return handleError(e, onError!, onSuccess!);
     }
   }
 
-  handleResponse(
+  static ResponseModel handleResponse(
     Response response,
     Function(DioExceptions dioExceptions) onError,
     Function(ResponseModel res) onSuccess,
@@ -191,7 +231,7 @@ class ApiBaseHelper {
     return successModel;
   }
 
-  static handleError(
+  static ResponseModel handleError(
     DioException e,
     Function(DioExceptions dioExceptions) onError,
     Function(ResponseModel res) onSuccess,
@@ -203,15 +243,17 @@ class ApiBaseHelper {
         return ResponseModel(statusCode: e.response!.statusCode, response: e.response);
       default:
         onError(DioExceptions.fromDioError(e));
-        throw DioExceptions.fromDioError(e).message!;
+        return ResponseModel(statusCode: e.response!.statusCode, response: e.response);
     }
   }
 }
 
 class DioExceptions implements Exception {
   String? message;
+  DioExceptionType? type;
 
   DioExceptions.fromDioError(DioException? dioError) {
+    type = dioError?.type;
     switch (dioError!.type) {
       case DioExceptionType.cancel:
         message = "Request to API server was cancelled";
@@ -228,7 +270,7 @@ class DioExceptions implements Exception {
       case DioExceptionType.badResponse:
         message = _handleResponseError(dioError.response!.statusCode!, dioError.response!.data);
         break;
-      case DioExceptionType.sendTimeout:
+      case DioException.sendTimeout:
         message = "Send timeout in connection with API server";
         break;
       default:
@@ -249,4 +291,7 @@ class DioExceptions implements Exception {
         return 'Sorry, something went wrong. Please try again.';
     }
   }
+
+  @override
+  String toString() => "{type: $type, message: $message}";
 }

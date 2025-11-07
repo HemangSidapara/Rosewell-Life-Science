@@ -25,11 +25,11 @@ class AppSizer {
 
   Orientation get getOrientation => _orientation;
 
-  setSize(Size value) {
+  void setSize(Size value) {
     _size = value;
   }
 
-  setOrientation(Orientation orientation) {
+  void setOrientation(Orientation orientation) {
     _orientation = orientation;
   }
 }

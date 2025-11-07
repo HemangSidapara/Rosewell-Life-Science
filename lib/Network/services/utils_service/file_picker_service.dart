@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,87 @@ import 'package:rosewell_life_science/Constants/app_colors.dart';
 
 class FilePickerService {
   FilePickerResult? result;
+
+  /// Storage & Photo Permissions
+  Future<(PermissionStatus storageStatus, PermissionStatus photosStatus)> permissionStatus({Future<bool> Function()? whenOpenSettings}) async {
+    // Default values
+    PermissionStatus storageStatus = PermissionStatus.granted;
+    PermissionStatus photosStatus = PermissionStatus.granted;
+
+    Future<void> recheckStatus() async {
+      if (Platform.isAndroid) {
+        final androidInfo = await DeviceInfoPlugin().androidInfo;
+        final androidVersion = androidInfo.version.sdkInt;
+        if (androidVersion >= 33) {
+          // Android 13+ (Scoped Storage) – storage not needed, only media access
+          photosStatus = await Permission.photos.status;
+        } else {
+          // Android ≤ 12 – needs storage
+          storageStatus = await Permission.storage.status;
+        }
+      } else {
+        // iOS
+        storageStatus = await Permission.storage.status;
+        photosStatus = await Permission.photos.status;
+      }
+    }
+
+    await recheckStatus();
+
+    // If any permission is permanently denied
+    if (storageStatus.isPermanentlyDenied || photosStatus.isPermanentlyDenied) {
+      if (kDebugMode) {
+        print("Permission ::::: PermanentlyDenied");
+      }
+      if (whenOpenSettings == null) {
+        await openAppSettings();
+      } else {
+        final isReturn = await whenOpenSettings.call();
+        if (isReturn) {
+          return (storageStatus, photosStatus);
+        }
+      }
+    }
+
+    // Re-check
+    await recheckStatus();
+
+    // Request if denied
+    if (storageStatus.isDenied || photosStatus.isDenied) {
+      if (kDebugMode) {
+        print("Permission ::::: Denied");
+      }
+
+      final requests = <Permission>[];
+
+      if (Platform.isAndroid) {
+        final androidInfo = await DeviceInfoPlugin().androidInfo;
+        final androidVersion = androidInfo.version.sdkInt;
+        if (androidVersion < 33 && storageStatus.isDenied) {
+          requests.add(Permission.storage);
+        }
+        if (androidVersion >= 33 && photosStatus.isDenied) {
+          requests.add(Permission.photos);
+        }
+      } else {
+        if (storageStatus.isDenied) {
+          requests.add(Permission.storage);
+        }
+        if (photosStatus.isDenied) {
+          requests.add(Permission.photos);
+        }
+      }
+
+      if (requests.isNotEmpty) {
+        await requests.request();
+      }
+    }
+
+    // Final check before return
+    await recheckStatus();
+
+    return (storageStatus, photosStatus);
+  }
 
   Future<File?> singleFilePicker({List<String>? allowedExtensions}) async {
     if (await Permission.storage.isGranted || await Permission.photos.request().isGranted) {

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:rosewell_life_science/Constants/app_assets.dart';
 import 'package:rosewell_life_science/Constants/app_colors.dart';
@@ -52,41 +53,83 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                   }
                 },
               ),
-              Padding(
-                padding: EdgeInsets.only(right: context.isPortrait ? 2.w : 2.h),
-                child: IconButton(
-                  onPressed: presentationForDoctorsController.isRefreshing.value
-                      ? () {}
-                      : () async {
-                          await presentationForDoctorsController.getDoctorApiCall(isLoading: false);
-                        },
-                  style: IconButton.styleFrom(
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: EdgeInsets.zero,
-                  ),
-                  icon: Obx(() {
-                    return TweenAnimationBuilder(
-                      duration: Duration(seconds: presentationForDoctorsController.isRefreshing.value ? 45 : 1),
-                      tween: Tween(begin: 0.0, end: presentationForDoctorsController.isRefreshing.value ? 45.0 : presentationForDoctorsController.ceilValueForRefresh.value),
-                      onEnd: () {
-                        presentationForDoctorsController.isRefreshing.value = false;
-                      },
-                      builder: (context, value, child) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          presentationForDoctorsController.ceilValueForRefresh(value.toDouble().ceilToDouble());
-                        });
-                        return Transform.rotate(
-                          angle: value * 2 * 3.141592653589793,
-                          child: Icon(
-                            Icons.refresh_rounded,
-                            color: AppColors.SECONDARY_COLOR,
-                            size: context.isPortrait ? 6.w : 6.h,
+
+              Row(
+                children: [
+                  ///Export Doctors
+                  IconButton(
+                    onPressed: () {
+                      presentationForDoctorsController.exportDoctorsToExcelApi();
+                    },
+                    style: IconButton.styleFrom(
+                      maximumSize: Size.square(
+                        context.isPortrait ? 8.w : 8.h,
+                      ),
+                      minimumSize: Size.square(
+                        context.isPortrait ? 8.w : 8.h,
+                      ),
+                      padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      backgroundColor: AppColors.SECONDARY_COLOR,
+                    ),
+                    icon: Obx(() {
+                      if (presentationForDoctorsController.isExportLoading.isTrue) {
+                        return SizedBox.square(
+                          dimension: context.isPortrait ? 4.w : 4.h,
+                          child: CircularProgressIndicator(
+                            color: AppColors.WHITE_COLOR,
+                            strokeWidth: 2,
                           ),
                         );
-                      },
-                    );
-                  }),
-                ),
+                      } else {
+                        return FaIcon(
+                          FontAwesomeIcons.fileExcel,
+                          size: context.isPortrait ? 4.w : 4.h,
+                          color: AppColors.WHITE_COLOR,
+                        );
+                      }
+                    }),
+                  ),
+                  SizedBox(width: context.isPortrait ? 1.w : 1.h),
+
+                  /// Refresh
+                  Padding(
+                    padding: EdgeInsets.only(right: context.isPortrait ? 2.w : 2.h),
+                    child: IconButton(
+                      onPressed: presentationForDoctorsController.isRefreshing.value
+                          ? () {}
+                          : () async {
+                              await presentationForDoctorsController.getDoctorApiCall(isLoading: false);
+                            },
+                      style: IconButton.styleFrom(
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: EdgeInsets.zero,
+                      ),
+                      icon: Obx(() {
+                        return TweenAnimationBuilder(
+                          duration: Duration(seconds: presentationForDoctorsController.isRefreshing.value ? 45 : 1),
+                          tween: Tween(begin: 0.0, end: presentationForDoctorsController.isRefreshing.value ? 45.0 : presentationForDoctorsController.ceilValueForRefresh.value),
+                          onEnd: () {
+                            presentationForDoctorsController.isRefreshing.value = false;
+                          },
+                          builder: (context, value, child) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              presentationForDoctorsController.ceilValueForRefresh(value.toDouble().ceilToDouble());
+                            });
+                            return Transform.rotate(
+                              angle: value * 2 * 3.141592653589793,
+                              child: Icon(
+                                Icons.refresh_rounded,
+                                color: AppColors.SECONDARY_COLOR,
+                                size: context.isPortrait ? 6.w : 6.h,
+                              ),
+                            );
+                          },
+                        );
+                      }),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -141,7 +184,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                               child: Text(
                                 AppStrings.noDataFound.tr,
                                 style: TextStyle(
-                                  color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                                  color: AppColors.SECONDARY_COLOR.withValues(alpha: 0.5),
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -223,7 +266,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                   collapsedShape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     side: BorderSide(
-                                      color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                                      color: AppColors.SECONDARY_COLOR.withValues(alpha: 0.5),
                                       width: 1.5,
                                     ),
                                   ),
@@ -231,7 +274,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     side: BorderSide(
-                                      color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                                      color: AppColors.SECONDARY_COLOR.withValues(alpha: 0.5),
                                       width: 1.5,
                                     ),
                                   ),
@@ -323,7 +366,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
                                                 ],
                                               ],
                                             ),
-                                          )
+                                          ),
                                         ]
                                       : [],
                                 );
@@ -432,15 +475,16 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
     presentationForDoctorsController.searchedExpansionTileControllerList.clear();
     if (searchedValue != "") {
       presentationForDoctorsController.searchedExpansionTileControllerList = RxList.generate(
-          presentationForDoctorsController.doctorDataList
-              .where(
-                (e) {
-                  return e.name?.contains(searchedValue) == true || e.name?.toLowerCase().contains(searchedValue) == true;
-                },
-              )
-              .toList()
-              .length,
-          (index) => ExpansionTileController());
+        presentationForDoctorsController.doctorDataList
+            .where(
+              (e) {
+                return e.name?.contains(searchedValue) == true || e.name?.toLowerCase().contains(searchedValue) == true;
+              },
+            )
+            .toList()
+            .length,
+        (index) => ExpansibleController(),
+      );
       presentationForDoctorsController.searchedDoctorDataList.addAll(
         presentationForDoctorsController.doctorDataList.where(
           (e) {
@@ -450,7 +494,7 @@ class _PresentationForDoctorsViewState extends State<PresentationForDoctorsView>
       );
     } else {
       presentationForDoctorsController.searchedDoctorDataList.addAll(presentationForDoctorsController.doctorDataList);
-      presentationForDoctorsController.searchedExpansionTileControllerList = RxList.generate(presentationForDoctorsController.searchedDoctorDataList.length, (index) => ExpansionTileController());
+      presentationForDoctorsController.searchedExpansionTileControllerList = RxList.generate(presentationForDoctorsController.searchedDoctorDataList.length, (index) => ExpansibleController());
     }
   }
 }

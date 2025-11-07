@@ -67,7 +67,7 @@ class _MedicineDetailsViewState extends State<MedicineDetailsView> {
                     ),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.PRIMARY_COLOR.withOpacity(0.35),
+                        color: AppColors.PRIMARY_COLOR.withValues(alpha: 0.35),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       height: double.maxFinite,

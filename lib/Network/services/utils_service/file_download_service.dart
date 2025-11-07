@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rosewell_life_science/Constants/app_colors.dart';
 import 'package:rosewell_life_science/Constants/app_strings.dart';
 import 'package:rosewell_life_science/Constants/app_utils.dart';
-import 'package:rosewell_life_science/Network/ResponseModel.dart';
+import 'package:rosewell_life_science/Network/response_model.dart';
 import 'package:rosewell_life_science/Utils/app_formatter.dart';
 import 'package:rosewell_life_science/Utils/app_sizer.dart';
 

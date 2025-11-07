@@ -31,7 +31,7 @@ class _CustomHeaderWidgetState extends State<CustomHeaderWidget> {
           IconButton(
             onPressed: widget.onBackPressed,
             style: IconButton.styleFrom(
-              highlightColor: AppColors.PRIMARY_COLOR.withOpacity(0.2),
+              highlightColor: AppColors.PRIMARY_COLOR.withValues(alpha: 0.2),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

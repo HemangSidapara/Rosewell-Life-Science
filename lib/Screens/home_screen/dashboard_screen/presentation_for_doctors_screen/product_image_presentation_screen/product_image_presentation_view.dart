@@ -24,7 +24,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
   RxBool isInitPortrait = true.obs;
   PageController pageController = PageController(initialPage: 0);
 
-  var timer;
+  Timer? timer;
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
         statusBarBrightness: Brightness.dark,
       ),
     );
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -70,9 +70,9 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
     isOneOpacity(true);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
 
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (timer.tick == 3) {
-        timer.cancel();
+    timer = Timer.periodic(const Duration(seconds: 1), (tick) {
+      if (tick.tick == 3) {
+        tick.cancel();
         isOneOpacity(false);
         Future.delayed(
           const Duration(milliseconds: 300),
@@ -99,7 +99,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
                   child: Container(
                     color: AppColors.WHITE_COLOR,
                     child: AppBar(
-                      backgroundColor: AppColors.PRIMARY_COLOR.withOpacity(0.5),
+                      backgroundColor: AppColors.PRIMARY_COLOR.withValues(alpha: 0.5),
                       centerTitle: true,
                       leadingWidth: 10.w,
                       leading: Padding(
@@ -109,7 +109,7 @@ class _ProductImagePresentationViewState extends State<ProductImagePresentationV
                             Get.back();
                           },
                           style: IconButton.styleFrom(
-                            highlightColor: AppColors.WHITE_COLOR.withOpacity(0.2),
+                            highlightColor: AppColors.WHITE_COLOR.withValues(alpha: 0.2),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),

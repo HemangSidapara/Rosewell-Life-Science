@@ -4,7 +4,7 @@ import 'package:rosewell_life_science/Constants/app_constance.dart';
 import 'package:rosewell_life_science/Constants/get_storage.dart';
 
 class SettingsController extends GetxController {
-  ExpansionTileController expansionTileController = ExpansionTileController();
+  ExpansibleController expansionTileController = ExpansibleController();
   RxBool isGujaratiLang = true.obs;
   RxBool isHindiLang = true.obs;
   RxBool isExpanded = false.obs;

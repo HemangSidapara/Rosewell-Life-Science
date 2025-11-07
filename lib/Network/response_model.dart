@@ -7,13 +7,13 @@ class ResponseModel {
 
   ResponseModel({this.statusCode, this.response});
 
-  get data => response!.data;
+  dynamic get data => response?.data;
 
-  get message => response!.data['msg'];
+  String? get message => response?.data?['msg']?.toString();
 
   bool get isSuccess => response!.statusCode! >= 200 && response!.statusCode! <= 299 && response!.data['code']!.toString().toInt() >= 200 && response!.data['code']!.toString().toInt() <= 299;
 
-  getExtraData(String paramName) {
+  dynamic getExtraData(String paramName) {
     return response!.data[paramName];
   }
 }

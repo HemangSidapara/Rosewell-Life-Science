@@ -60,4 +60,9 @@ class AppStrings {
   static const String searchDoctor = 'Search Doctor';
   static const String copyrightContext = '©2024 Mindwave Infoway';
   static const String poweredByMindwaveInfoway = 'powered by Mindwave Infoway';
+  static const String newVersionAvailable = 'A new version is available. Please upgrade to it.';
+  static const String update = 'Update';
+  static const String storagePermissionRequired = 'Storage permission is required.';
+  static const String excelFileExported = 'Excel file exported to "Downloads" folder.';
+  static const String issueInExportExcelFile = 'Issue in export excel file.';
 }
